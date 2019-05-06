@@ -1,6 +1,7 @@
 package algorithmes;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import escampe.EscampeBoard;
 import escampe.EtatEscampe;
@@ -17,7 +18,7 @@ public class IDAlphaBeta {
 
     /** La profondeur de recherche par défaut
      */
-    private final static int PROFMAXDEFAUT = 10;
+    private final static int PROFMAXDEFAUT = 1;
 
    
     // -------------------------------------------
@@ -47,20 +48,32 @@ public class IDAlphaBeta {
     /** Le nombre de feuilles évaluées par l'algorithme
      */
     private int nbfeuilles;
+    
+    private long tempsMax;
 
 
   // -------------------------------------------
   // Constructeurs
   // -------------------------------------------
     public IDAlphaBeta(Heuristique h, String joueurMax, String joueurMin) {
-        this(h,joueurMax,joueurMin,PROFMAXDEFAUT);
+        this(h,joueurMax,joueurMin,PROFMAXDEFAUT,100);
     }
 
+    
     public IDAlphaBeta(Heuristique h, String joueurMax, String joueurMin, int profMaxi) {
         this.h = h;
         this.joueurMin = joueurMin;
         this.joueurMax = joueurMax;
         profMax = profMaxi;
+//			System.out.println("Initialisation d'un MiniMax de profondeur " + profMax);
+    }
+    
+    public IDAlphaBeta(Heuristique h, String joueurMax, String joueurMin, int profMaxi,long tempsMax) {
+        this.h = h;
+        this.joueurMin = joueurMin;
+        this.joueurMax = joueurMax;
+        this.profMax = profMaxi;
+        this.tempsMax = tempsMax;
 //			System.out.println("Initialisation d'un MiniMax de profondeur " + profMax);
     }
 
@@ -72,6 +85,8 @@ public class IDAlphaBeta {
  	   nbnoeuds=0;
  	   
  	   nbfeuilles=0;
+ 	   
+ 	   System.out.println("IDAlphaBeta.meilleurCoup() temps max : "+this.tempsMax+" prof: "+ profMax);
  	   
  	   //EscampeBoard eb = new EscampeBoard(p.getWhite().clone(), p.getBlack().clone(), Integer.valueOf(p.getLastLisere()));
  	   EtatEscampe ee = (EtatEscampe) p.getEtatInitial(); 
@@ -85,11 +100,16 @@ public class IDAlphaBeta {
  	   //System.err.println("firstMove: "+firstCoup);
  	   String mCoup = firstCoup;
  	   // Foreach successeurs
+ 	   long waitedTime = 0;
  	   for(int i = 1; i < le.size(); i++) {
  		   nbnoeuds++;
  		   String nextCoup = ((EtatEscampe) le.get(i)).getLastMove();
  		   
+ 		   long waitedTime1 = new Date().getTime();
+ 		   
  		   float newAlpha = minMaxAlphaBeta(p, (EtatEscampe)le.get(i), this.h, profMax-1, alpha, 1000000);
+ 		   
+ 		   long waitedTime2 = new Date().getTime();
 		   
  		   if (newAlpha>alpha){
 				
@@ -98,11 +118,24 @@ public class IDAlphaBeta {
 	   			alpha = newAlpha;
 	   		}
  		   //System.out.println("mCoup: "+mCoup);
+// 		  System.out.println("Temps début: "+waitedTime1);
+// 		  System.out.println("Temps fin: "+waitedTime2);
+ 		  waitedTime += (waitedTime2 - waitedTime1) + 1;
+// 		   System.out.println("Temps écoulé: "+waitedTime);
+ 		   if(waitedTime >= tempsMax) {
+ 			   System.err.println("Time over");
+ 			   profMax = 0;
+ 			   return mCoup;
+ 		   }
+ 		   else { // dans les temps
+ 			   profMax++;
+ 			   System.out.println("Itérative avec prof: "+profMax);
+ 		   }
  	   }
 	   System.out.println("Nombre de feuilles développés par la recherche : "+nbfeuilles);
  	   
  	   System.out.println("Nombre de noeuds développés par la recherche : "+nbnoeuds);
- 	   
+ 	   profMax = 0;
  	   return mCoup;
  }
     

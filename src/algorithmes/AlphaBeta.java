@@ -121,7 +121,6 @@ private float minMaxAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h, int pr
     			
 			nbnoeuds--;
 		}
-		System.out.print("F");
 		nbfeuilles++;
 		
 		return this.h.eval(ee);	
@@ -156,7 +155,6 @@ private float maxMinAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h,int pro
 			
 			nbnoeuds--;
 		}
-		System.out.print("F");
 		nbfeuilles++;
 		
 		return this.h.eval(ee);	

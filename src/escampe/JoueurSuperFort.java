@@ -1,6 +1,8 @@
 package escampe;
 
 import algorithmes.AlphaBeta;
+import algorithmes.IDAlphaBeta;
+import algorithmes.NegAlphaBeta;
 import modeles.Etat;
 import modeles.Heuristique;
 import modeles.Probleme;
@@ -11,19 +13,26 @@ public class JoueurSuperFort implements IJoueur{
 	public String player;
 	private EscampeBoard board; //TODO : Peut-il etre static avec l'algo IA?
 	private Heuristique h = HeuristiquesEscampe.h;
-	private Heuristique h2 = HeuristiquesEscampe.h2;	
+	private Heuristique h2 = HeuristiquesEscampe.h2;
+	private Heuristique h3 = HeuristiquesEscampe.h3;
 	private AlphaBeta algo;
+	private IDAlphaBeta algoID;
+	private NegAlphaBeta algoNegAB;
 	
 	@Override
 	public void initJoueur(int mycolour) {
 		board = new EscampeBoard();
 		//board.setFromFile("\\src\\data\\plateau1.txt");
 		if(mycolour == -1) {
-			this.algo = new AlphaBeta(h2, "blanc", "noir");
+			this.algo = new AlphaBeta(h3, "blanc", "noir");
+			this.algoID = new IDAlphaBeta(h3, "blanc", "noir");
+			this.algoNegAB = new NegAlphaBeta(h3);
 			player = "blanc";
 		}
 		else {
-			this.algo = new AlphaBeta(h2, "noir", "blanc");
+			this.algo = new AlphaBeta(h3, "noir", "blanc");
+			this.algoID = new IDAlphaBeta(h3, "noir", "blanc");
+			this.algoNegAB = new NegAlphaBeta(h3);
 			player = "noir";
 		}
 	}
@@ -36,9 +45,7 @@ public class JoueurSuperFort implements IJoueur{
 
 	@Override
 	public String choixMouvement() {
-		if(board.gameOver()) {
-			return "xxxxx";
-		}
+		
 		//TODO : Premier mouvement a mieux choisir
 		String w = "B2/A1/B1/C2/E2/F2";
 		String b = "C6/A6/B5/D5/E6/F5";
@@ -50,6 +57,9 @@ public class JoueurSuperFort implements IJoueur{
 		}
 		else {
 			
+			if(board.gameOver()) {
+				return "xxxxx";
+			}
 			EtatEscampe initial = new EtatEscampe(board.getWhite(), board.getBlack(), player, board.getLastLisere());
 			
 			String[] moves = board.possibleMoves(player);
@@ -72,7 +82,14 @@ public class JoueurSuperFort implements IJoueur{
 			Probleme pb = new ProblemeEscampe( initial, "Pb escampe");
 			System.err.println(pb.successeurs(initial).size());
 			
-			String meilleurCoup = algo.meilleurCoup(pb);
+			// Avec AlphaBeta
+			//String meilleurCoup = algo.meilleurCoup(pb);
+			
+			// Avec IterativeAlphaBeta
+			//String meilleurCoup = algoID.meilleurCoup(pb);
+			
+			// Avec NegAlphaBeta
+			String meilleurCoup = algoNegAB.meilleurCoup(pb);
 			
 			System.out.println("Meilleur Coup : "+ meilleurCoup);
 			coupJoue = meilleurCoup;
@@ -149,5 +166,13 @@ public class JoueurSuperFort implements IJoueur{
 				System.out.println("");
 			}
 		}
+	}
+
+	public AlphaBeta getAlgo() {
+		return algo;
+	}
+
+	public void setAlgo(AlphaBeta algo) {
+		this.algo = algo;
 	}
 }
