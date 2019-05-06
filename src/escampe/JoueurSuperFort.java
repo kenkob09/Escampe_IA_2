@@ -32,7 +32,7 @@ public class JoueurSuperFort implements IJoueur{
 		}
 		else {
 			this.algo = new AlphaBeta(h3, "noir", "blanc");
-			this.algoID = new IDAlphaBeta(hfinal, "noir", "blanc");
+			this.algoID = new IDAlphaBeta(h2, "noir", "blanc");
 			this.algoNegAB = new NegAlphaBeta(h3);
 			player = "noir";
 		}
@@ -76,12 +76,9 @@ public class JoueurSuperFort implements IJoueur{
 				System.out.print(m+ ",");
 				
 			}
-			System.out.println("\n");
-			if(moves.length == 4) {
-				System.err.println("t");
-			}
+			
 			Probleme pb = new ProblemeEscampe( initial, "Pb escampe");
-			System.err.println(pb.successeurs(initial).size());
+			//System.err.println(pb.successeurs(initial).size());
 			
 			// Avec AlphaBeta
 			//String meilleurCoup = algo.meilleurCoup(pb);

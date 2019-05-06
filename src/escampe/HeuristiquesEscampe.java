@@ -69,7 +69,11 @@ public class HeuristiquesEscampe {
 	//Heuristique qui fait (somme des distances qui separent la licorne ami aux paladins ennemi) 
 	// 					 - (somme des distances qui separent la licorne ennemi aux paladins amis)
 	public static Heuristique h3 = new Heuristique() {
-		
+		@Override
+		public String toString() {
+			// TODO Auto-generated method stub
+			return "h3";
+		}
 		@Override
 		public float eval(Etat e) {
 			if (e instanceof EtatEscampe) {
@@ -125,7 +129,11 @@ public class HeuristiquesEscampe {
 	//Heuristique qu'on va utiliser qui regroupe hend, h3 et le fait qu'un pion ne doit pas aller sur un lisere qui pourrait mettre en danger sa licorne
 	//Heuristique mashallah +++ 
 		public static Heuristique hfinal = new Heuristique() {
-			
+			@Override
+			public String toString() {
+				// TODO Auto-generated method stub
+				return "hfinal";
+			}
 			@Override
 			public float eval(Etat e) {
 				if (e instanceof EtatEscampe) {
