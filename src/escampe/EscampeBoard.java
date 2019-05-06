@@ -189,10 +189,10 @@ public class EscampeBoard implements Etat {
     				presence.add(p);
     				int i = get_i_from_string(p);
     				int j = get_j_from_string(p);
-    				if ( (bord_noir=="bas")&&((i<0)||(i>1)||(j<0)||(j>5)) ) {
+    				if ( (bord_noir.contains("bas") )&&((i<0)||(i>1)||(j<0)||(j>5)) ) {
     					return false;		
     				}
-    				else if ( (bord_noir=="haut")&&((i<4)||(i>5)||(j<0)||(j>5)) ) {
+    				else if ( (bord_noir.contains("haut") )&&((i<4)||(i>5)||(j<0)||(j>5)) ) {
     					return false;
     				}
     			}        		
@@ -203,7 +203,7 @@ public class EscampeBoard implements Etat {
         else {  
         	String[] possible_moves = possibleMoves(player);
         	for(int i=0; i<possible_moves.length;i++) {
-        		if (possible_moves[i]==move) {
+        		if (possible_moves[i].contains(move) ) {
         			return true;
         		}
         	}
@@ -272,13 +272,16 @@ public class EscampeBoard implements Etat {
 		
 		
 		
-		/************AENLEVER****************/
-		//TODO : System.out.print("NOUVEAUX MOUVEMENTS : ");
+
+		/*
+		System.out.print("NOUVEAUX MOUVEMENTS : ");
+>>>>>>> 5683a659fba2bed66f05b37c4127f6ae67c228c5
 		for (int i=0; i<possible_moves_tab.length;i++) {
 			//System.out.print(possible_moves_tab[i]+" , ");
 		}
-		//System.out.println("");
-		
+
+		*/
+
 		
 		
 		
@@ -297,11 +300,11 @@ public class EscampeBoard implements Etat {
 		}
 		else {
 			//Sinon, on explore une case plus loin
-			return explore_adjacents_rec( explore_adjacents(cases, player), player, n+1, lisere); 
+			return explore_adjacents_rec( explore_adjacents(cases, player, n+1, lisere), player, n+1, lisere); 
 		}
 	}
 	
-	public ArrayList<String> explore_adjacents (ArrayList<String> cases, String player) {		
+	public ArrayList<String> explore_adjacents (ArrayList<String> cases, String player, int n, int lisere) {		
 		//Tableau des differentes directions
 		String[] directions = {"haut","bas","droite","gauche"};
 		//ArrayList qui sera retourne
@@ -322,7 +325,7 @@ public class EscampeBoard implements Etat {
 						//Si on ne sort pas du tableau
 						if (start_i-1>=0) {
 							//Si la case n'est pas occupee, alors on l'ajoute dans le resultat
-							if (!is_occupied(start_i-1,start_j,p_type,player)){
+							if (!is_occupied(start_i-1,start_j,p_type,player,n,lisere)){
 								String indice = String.valueOf(start_i-1 +1);//+1 car c'est un indice
 								String alpha = String.valueOf(alphabet[start_j]);
 								String new_case = alpha+indice;
@@ -332,7 +335,7 @@ public class EscampeBoard implements Etat {
 					}
 					if (d.contains("bas")) {
 						if (start_i+1<=5) {
-							if (!is_occupied(start_i+1,start_j,p_type,player)){
+							if (!is_occupied(start_i+1,start_j,p_type,player,n,lisere)){
 								String indice = String.valueOf(start_i+1 +1);
 								String alpha = String.valueOf(alphabet[start_j]);
 								String new_case = alpha+indice;
@@ -342,7 +345,7 @@ public class EscampeBoard implements Etat {
 					}				
 					if (d.contains("droite")) {
 						if (start_j+1<=5) {
-							if (!is_occupied(start_i,start_j+1,p_type,player)){
+							if (!is_occupied(start_i,start_j+1,p_type,player,n,lisere)){
 								String indice = String.valueOf(start_i +1);
 								String alpha = String.valueOf(alphabet[start_j+1]);
 								String new_case = alpha+indice;
@@ -352,7 +355,7 @@ public class EscampeBoard implements Etat {
 					}
 					if (d.contains("gauche")) {
 						if (start_j-1>=0) {
-							if (!is_occupied(start_i,start_j-1,p_type,player)){
+							if (!is_occupied(start_i,start_j-1,p_type,player,n,lisere)){
 								String indice = String.valueOf(start_i +1);
 								String alpha = String.valueOf(alphabet[start_j-1]);
 								String new_case = alpha+indice;
@@ -367,15 +370,15 @@ public class EscampeBoard implements Etat {
 	}
 	
 	
-	//Fonction qui regarde si la case est occupee en fonction d'un type de pion et d'un joueur
-	public boolean is_occupied (int i, int j, String p_type, String player) {
+	//Fonction qui regarde si la case est occupee en fonction d'un type de pion et d'un joueur et du nombre de mouvements effectue
+	public boolean is_occupied (int i, int j, String p_type, String player, int n, int lisere) {
 		char[][] board = lists_to_board();
 		if (player.contains("noir")) {
 			if ( (board[i][j]=='-')) {
 				return false;
 			}
 			//Si c'est un paladin, il peut prendre la licorne adverse
-			if (p_type.contains("p")&&(board[i][j]=='B')) {
+			if (p_type.contains("p")&&(board[i][j]=='B')&&(n==lisere)) {
 				return false;
 			}
 		}
@@ -383,7 +386,7 @@ public class EscampeBoard implements Etat {
 			if ( (board[i][j]=='-')) {
 				return false;
 			}
-			if (p_type.contains("p")&&(board[i][j]=='N')) {
+			if (p_type.contains("p")&&(board[i][j]=='N')&&(n==lisere)) {
 				return false;
 			}
 		}
@@ -496,6 +499,25 @@ public class EscampeBoard implements Etat {
 		System.out.println("");
 	}
 	
+	public void print_board() {
+		if ( (black[0]!=null)&&(white[0]!=null)&&(!gameOver()) ){
+			char[][] eb = lists_to_board();
+			for(int i=0; i<6; i++) {
+				for(int j=0; j<6; j++) {
+					System.out.print(eb[i][j]+" ");
+					/*System.out.print(board.liserePlateau[i][j]);
+					System.out.print(" | ");*/
+				}
+				System.out.print("    ");
+				for(int j=0; j<6; j++) {
+					System.out.print(liserePlateau[i][j]);
+					System.out.print("|");
+				}
+				System.out.println("");
+			}
+		}
+	}
+	
 	
 	public static void main (String[] args){
 		
@@ -503,7 +525,7 @@ public class EscampeBoard implements Etat {
 		String[] ss = s.split("/");
 		
 		System.err.println(ss.length );
-		/*//Tests
+		//Tests
 	
 		EscampeBoard eb = new EscampeBoard();
 	    //Definition du chemin actuel
@@ -515,15 +537,44 @@ public class EscampeBoard implements Etat {
 	    // Test saveToFile
 	    eb.saveToFile("\\src\\data\\sauvegarde.txt");
 	    
+	    //Test to display the board
+	    eb.print_board();
+	    
 	    // Test isValideMove
-
-        System.out.println(eb.isValidMove("A1-A2", "blanc"));
+	    System.out.println("");
+	    boolean verdict = eb.isValidMove("A1-A2", "blanc");
+	    System.out.print("Is A1-A2 a valid move for white ? -> ");
+	    System.out.println(verdict);
+	    boolean verdict2 = eb.isValidMove("C2-A2", "blanc");
+	    System.out.print("Is C2-A2 a valid move for white ? -> ");
+	    System.out.println(verdict2);
+	    System.out.println("");
+	    
+	    System.out.println("blanc plays B2-B3");
+	    eb.play("B2-B3","blanc");
+	    eb.print_board();
+	    
+	    System.out.println("");
+	    boolean verdict3 = eb.isValidMove("B5-B2", "noir");
+	    System.out.print("Is B5-B2 a valid move for black ? -> ");
+	    System.out.println(verdict3);
+	    System.out.println("");
+	    
+	    /*
+        String[] pmn = eb.possibleMoves("noir");
+        System.out.println("");
+        System.out.println("Liste des coups possibles pour NOIR : ");
+        for(String m : pmn) {
+            System.out.print(m+",");
+        }*/
+        
 	    // On cherche tous les moves
         String[] pm = eb.possibleMoves("blanc");
-
-        for(String s : pm) {
-            System.out.println(s);
-        }*/
+        System.out.println("");
+        System.out.println("Liste des coups possibles pour BLANC : ");
+        for(String m : pm) {
+            System.out.print(m+",");
+        }
 	}
 	
 	
