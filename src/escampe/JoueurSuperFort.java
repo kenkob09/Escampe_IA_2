@@ -58,7 +58,6 @@ public class JoueurSuperFort implements IJoueur{
 				return "E";
 			}
 			
-			
 			System.out.println("Coups possibles de "+initial.getPlayer()+":");
 			//System.err.println(algo.getJoueurMax());
 			
@@ -67,7 +66,9 @@ public class JoueurSuperFort implements IJoueur{
 				
 			}
 			System.out.println("\n");
-			
+			if(moves.length == 4) {
+				System.err.println("t");
+			}
 			Probleme pb = new ProblemeEscampe( initial, "Pb escampe");
 			System.err.println(pb.successeurs(initial).size());
 			

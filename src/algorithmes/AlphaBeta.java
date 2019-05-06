@@ -84,7 +84,7 @@ public class AlphaBeta {
  	   LinkedList<Etat> le = (LinkedList<Etat>) p.successeurs(ee);	
  	  
  	   // Initialisation
- 	   float alpha = minMaxAlphaBeta(p, ee, this.h, this.profMax-1, -1000000, 1000000);
+ 	   float alpha = maxMinAlphaBeta(p, ee, this.h, this.profMax-1, -1000000, 1000000);
  	   String firstCoup = ((EtatEscampe) le.get(0)).getLastMove();
  	   //System.err.println("firstMove: "+firstCoup);
  	   String mCoup = firstCoup;
@@ -93,7 +93,7 @@ public class AlphaBeta {
  		   nbnoeuds++;
  		   String nextCoup = ((EtatEscampe) le.get(i)).getLastMove();
  		   
- 		   float newAlpha = minMaxAlphaBeta(p, (EtatEscampe)le.get(i), this.h, profMax-1, alpha, 1000000);
+ 		   float newAlpha = maxMinAlphaBeta(p, (EtatEscampe)le.get(i), this.h, profMax-1, alpha, 1000000);
 		   
  		   if (newAlpha>alpha){
 				
@@ -113,14 +113,15 @@ public class AlphaBeta {
 private float minMaxAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h, int profondeur, float alpha, float beta){
 	
 	EscampeBoard eb = new EscampeBoard(ee.getWhite().clone(), ee.getBlack().clone(), Integer.valueOf(ee.getLastLisere()));
-    	
+   
+    
 	if ((profondeur <= 0) || (eb.gameOver())) {	// Si profondeur atteinte
 		
 		if (eb.gameOver()){
     			
 			nbnoeuds--;
 		}
-    		
+		System.out.print("F");
 		nbfeuilles++;
 		
 		return this.h.eval(ee);	
@@ -131,7 +132,7 @@ private float minMaxAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h, int pr
 		
     	for(int i = 1; i < le.size(); i++) {
    		   nbnoeuds++;
-   		   
+   		
    		   beta = Math.min(beta, maxMinAlphaBeta(p, ((EtatEscampe) le.get(i)),h, profondeur - 1, alpha, beta));
   		   
    		   if (alpha>=beta){
@@ -155,7 +156,7 @@ private float maxMinAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h,int pro
 			
 			nbnoeuds--;
 		}
-		
+		System.out.print("F");
 		nbfeuilles++;
 		
 		return this.h.eval(ee);	
@@ -165,8 +166,8 @@ private float maxMinAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h,int pro
 		
     	for(int i = 1; i < le.size(); i++) {
    		   nbnoeuds++;
-   		   
-   		   alpha = Math.max(beta, minMaxAlphaBeta(p, ((EtatEscampe) le.get(i)),h, profondeur - 1, alpha, beta));
+   		
+   		   alpha = Math.max(alpha, minMaxAlphaBeta(p, ((EtatEscampe) le.get(i)),h, profondeur - 1, alpha, beta));
   
    		   if (alpha>=beta){
   			
@@ -206,6 +207,7 @@ private float maxMinAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h,int pro
 	   	String mCoup = firstCoup;
 	   
 	   	for (int i=1; i<coupsPossibles.length;i++){
+		  
 		   
 	   		nbnoeuds++;
 		   
