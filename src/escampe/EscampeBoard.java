@@ -399,7 +399,7 @@ public class EscampeBoard implements Etat {
         if(move.length() > 5){ 
             String[] pions = move.split("/");
             
-            if(player == "blanc"){
+            if(player.contains("blanc") ){
                     white = pions;
             }
             else {
@@ -414,7 +414,7 @@ public class EscampeBoard implements Etat {
             String end = change[1];
             int end_i = get_i_from_string(end);
             int end_j = get_j_from_string(end);
-            if(player == "blanc"){
+            if(player.contains("blanc") ){
             	//On regarde si la licorne adverse est sur la case d'arrivee
             	if (board[end_i][end_j]=='N') {
             		//Dans ce cas, elle est morte
@@ -466,7 +466,7 @@ public class EscampeBoard implements Etat {
 	
 	public boolean gameOver(){
 		//On regarde si l'une des deux positions des licornes est �gale � ZZ
-		return ( (white[0]=="ZZ")||(black[0]=="ZZ") );
+		return ( (white[0].contains("ZZ"))||(black[0].contains("ZZ")) );
 	}
 	
 	public static int get_j_from_string(String s){
@@ -559,19 +559,11 @@ public class EscampeBoard implements Etat {
 	    System.out.print("Is B5-B2 a valid move for black ? -> ");
 	    System.out.println(verdict3);
 	    System.out.println("");
-	    
-	    /*
-        String[] pmn = eb.possibleMoves("noir");
-        System.out.println("");
-        System.out.println("Liste des coups possibles pour NOIR : ");
-        for(String m : pmn) {
-            System.out.print(m+",");
-        }*/
         
 	    // On cherche tous les moves
-        String[] pm = eb.possibleMoves("blanc");
+        String[] pm = eb.possibleMoves("noir");
         System.out.println("");
-        System.out.println("Liste des coups possibles pour BLANC : ");
+        System.out.println("Liste des coups possibles pour NOIR : ");
         for(String m : pm) {
             System.out.print(m+",");
         }

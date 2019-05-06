@@ -29,10 +29,7 @@ public class ProblemeEscampe extends Probleme{
             return false;
         }
 		EtatEscampe ee = (EtatEscampe) e;
-		///////////////////////////////////////////////TODO : Pas besoin de copier ?
-		///// Pas sur que la copie serve puisque l'on copie le même tableau, game over fait simplement une vérification, elle ne modifie rien
-		EscampeBoard eb = new EscampeBoard(ee.getWhite(),ee.getBlack(),ee.getLastLisere());
-		return eb.gameOver();
+		return ee.getBlack()[0].contains("ZZ")||ee.getWhite()[0].contains("ZZ");
 	}
 
 	@Override
