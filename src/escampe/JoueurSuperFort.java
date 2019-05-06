@@ -11,7 +11,7 @@ public class JoueurSuperFort implements IJoueur{
 	public String player;
 	private EscampeBoard board; //TODO : Peut-il etre static avec l'algo IA?
 	private Heuristique h = HeuristiquesEscampe.h;
-		
+	private Heuristique h2 = HeuristiquesEscampe.h2;
 /*	private static Heuristique h1 = new Heuristique() {
 		
 		@Override
@@ -85,11 +85,11 @@ public class JoueurSuperFort implements IJoueur{
 		board = new EscampeBoard();
 		//board.setFromFile("\\src\\data\\plateau1.txt");
 		if(mycolour == -1) {
-			this.algo = new AlphaBeta(h, "blanc", "noir");
+			this.algo = new AlphaBeta(h2, "blanc", "noir");
 			player = "blanc";
 		}
 		else {
-			this.algo = new AlphaBeta(h, "noir", "blanc");
+			this.algo = new AlphaBeta(h2, "noir", "blanc");
 			player = "noir";
 		}
 	}
@@ -145,16 +145,16 @@ public class JoueurSuperFort implements IJoueur{
 			
 			//Si le coup choisi est fatal, on renvoit xxxxx pour signaler la fin de partie
 			
-			if (player == "blanc") {
-				if (moves[0].split("-")[1].contentEquals(board.getBlack()[0])) {
-					coupJoue = "xxxxx";
-				}
-			}
-			else {
-				if (moves[0].split("-")[1].contentEquals(board.getWhite()[0])) {
-					coupJoue = "xxxxx";
-				}
-			}
+//			if (player == "blanc") {
+//				if (moves[0].split("-")[1].contentEquals(board.getBlack()[0])) {
+//					return "xxxxx";
+//				}
+//			}
+//			else {
+//				if (moves[0].split("-")[1].contentEquals(board.getWhite()[0])) {
+//					return "xxxxx";
+//				}
+//			}
 			//coupJoue = moves[0];
 		}
 		

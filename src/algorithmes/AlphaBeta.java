@@ -144,39 +144,39 @@ private float minMaxAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h, int pr
 	return beta;
 }
     
-    private float maxMinAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h,int profondeur, float alpha, float beta){
-    	
-    	EscampeBoard eb = new EscampeBoard(ee.getWhite().clone(), ee.getBlack().clone(), Integer.valueOf(ee.getLastLisere()));
-    	
-    	
-    	if ((profondeur <= 0) || (eb.gameOver())) {	// Si profondeur atteinte
-    		
-    		if (eb.gameOver()){
-    			
-    			nbnoeuds--;
-    		}
-    		
-    		nbfeuilles++;
-    		
-    		return this.h.eval(ee);	
-    	}
-    	else { // Profondeur > 0
-    		LinkedList<Etat> le =  (LinkedList<Etat>) p.successeurs(ee);
-    		
-        	for(int i = 1; i < le.size(); i++) {
-       		   nbnoeuds++;
-       		   
-       		   alpha = Math.max(beta, minMaxAlphaBeta(p, ((EtatEscampe) le.get(i)),h, profondeur - 1, alpha, beta));
-      
-       		   if (alpha>=beta){
-      			
-       			   return beta;  			   
-       			
-      	   		}
-       	   }		
-    	}
-    	return alpha;
-    }
+private float maxMinAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h,int profondeur, float alpha, float beta){
+	
+	EscampeBoard eb = new EscampeBoard(ee.getWhite().clone(), ee.getBlack().clone(), Integer.valueOf(ee.getLastLisere()));
+	
+	
+	if ((profondeur <= 0) || (eb.gameOver())) {	// Si profondeur atteinte
+		//System.err.println("Etat Final");
+		if (eb.gameOver()){
+			
+			nbnoeuds--;
+		}
+		
+		nbfeuilles++;
+		
+		return this.h.eval(ee);	
+	}
+	else { // Profondeur > 0
+		LinkedList<Etat> le =  (LinkedList<Etat>) p.successeurs(ee);
+		
+    	for(int i = 1; i < le.size(); i++) {
+   		   nbnoeuds++;
+   		   
+   		   alpha = Math.max(beta, minMaxAlphaBeta(p, ((EtatEscampe) le.get(i)),h, profondeur - 1, alpha, beta));
+  
+   		   if (alpha>=beta){
+  			
+   			   return beta;  			   
+   			
+  	   		}
+   	   }		
+	}
+	return alpha;
+}
 
   
    public String meilleurCoup(EtatEscampe p) {
