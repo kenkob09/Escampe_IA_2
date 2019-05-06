@@ -15,6 +15,7 @@ public class JoueurSuperFort implements IJoueur{
 	private Heuristique h = HeuristiquesEscampe.h;
 	private Heuristique h2 = HeuristiquesEscampe.h2;
 	private Heuristique h3 = HeuristiquesEscampe.h3;
+	private Heuristique hfinal = HeuristiquesEscampe.hfinal;
 	private AlphaBeta algo;
 	private IDAlphaBeta algoID;
 	private NegAlphaBeta algoNegAB;
@@ -25,13 +26,13 @@ public class JoueurSuperFort implements IJoueur{
 		//board.setFromFile("\\src\\data\\plateau1.txt");
 		if(mycolour == -1) {
 			this.algo = new AlphaBeta(h3, "blanc", "noir");
-			this.algoID = new IDAlphaBeta(h3, "blanc", "noir");
+			this.algoID = new IDAlphaBeta(hfinal, "blanc", "noir");
 			this.algoNegAB = new NegAlphaBeta(h3);
 			player = "blanc";
 		}
 		else {
 			this.algo = new AlphaBeta(h3, "noir", "blanc");
-			this.algoID = new IDAlphaBeta(h3, "noir", "blanc");
+			this.algoID = new IDAlphaBeta(hfinal, "noir", "blanc");
 			this.algoNegAB = new NegAlphaBeta(h3);
 			player = "noir";
 		}
@@ -86,10 +87,10 @@ public class JoueurSuperFort implements IJoueur{
 			//String meilleurCoup = algo.meilleurCoup(pb);
 			
 			// Avec IterativeAlphaBeta
-			//String meilleurCoup = algoID.meilleurCoup(pb);
+			String meilleurCoup = algoID.meilleurCoup(pb);
 			
 			// Avec NegAlphaBeta
-			String meilleurCoup = algoNegAB.meilleurCoup(pb);
+			//String meilleurCoup = algoNegAB.meilleurCoup(pb);
 			
 			System.out.println("Meilleur Coup : "+ meilleurCoup);
 			coupJoue = meilleurCoup;

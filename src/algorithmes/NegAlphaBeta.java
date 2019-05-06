@@ -65,7 +65,7 @@ public class NegAlphaBeta {
 		  LinkedList<Etat> le = (LinkedList<Etat>) p.successeurs(ee);	
 		  
 		  // Initialisation
-		  float alpha = negAlphaBeta(p, ee, this.h, -1000000, 1000000, 1,profMax-1);
+		  float alpha = -negAlphaBeta(p, ee, this.h, -1000000, 1000000, 1,profMax-1);
 		  String firstCoup = ((EtatEscampe) le.get(0)).getLastMove();
 		  //System.err.println("firstMove: "+firstCoup);
 		  String mCoup = firstCoup;
@@ -73,7 +73,7 @@ public class NegAlphaBeta {
 		  for(int i = 1; i < le.size(); i++) {
 			  nbnoeuds++;
 			  String nextCoup = ((EtatEscampe) le.get(i)).getLastMove();
-			   
+			   // TODO : Attention aux -
 			  float newAlpha = negAlphaBeta(p, (EtatEscampe) le.get(i), this.h, alpha, 1000000, -1,profMax-1);
 	   
 			  if (newAlpha>alpha){

@@ -86,7 +86,7 @@ public class IDAlphaBeta {
  	   
  	   nbfeuilles=0;
  	   
- 	   System.out.println("IDAlphaBeta.meilleurCoup() temps max : "+this.tempsMax+" prof: "+ profMax);
+ 	   //System.out.println("IDAlphaBeta.meilleurCoup() temps max : "+this.tempsMax+" prof: "+ profMax);
  	   
  	   //EscampeBoard eb = new EscampeBoard(p.getWhite().clone(), p.getBlack().clone(), Integer.valueOf(p.getLastLisere()));
  	   EtatEscampe ee = (EtatEscampe) p.getEtatInitial(); 
@@ -129,7 +129,7 @@ public class IDAlphaBeta {
  		   }
  		   else { // dans les temps
  			   profMax++;
- 			   System.out.println("Itérative avec prof: "+profMax);
+ 			   //System.out.println("Itérative avec prof: "+profMax);
  		   }
  	   }
 	   System.out.println("Nombre de feuilles développés par la recherche : "+nbfeuilles);
