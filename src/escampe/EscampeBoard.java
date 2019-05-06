@@ -212,7 +212,6 @@ public class EscampeBoard implements Etat {
         return false;
 	}
 
-	 // TODO : Il faut gérer le cas où le joueur ne peut pas jouer
 	public String[] possibleMoves(String player){
 		//Les pions qu'on va regarder 
 		String[] pions;
@@ -269,24 +268,9 @@ public class EscampeBoard implements Etat {
 		for (int i=0; i<possible_moves.size();i++) {
 			possible_moves_tab[i]=possible_moves.get(i);
 		}
-		
-		
-		
-
-		/*
-		System.out.print("NOUVEAUX MOUVEMENTS : ");
->>>>>>> 5683a659fba2bed66f05b37c4127f6ae67c228c5
-		for (int i=0; i<possible_moves_tab.length;i++) {
-			//System.out.print(possible_moves_tab[i]+" , ");
-		}
-
-		*/
-
-		
-		
-		
 		return possible_moves_tab;
 	}
+	
 	
 	public ArrayList<String> explore_adjacents_rec (ArrayList<String> cases, String player, int n, int lisere){
 		//Si on a atteint le nombre de mouvements, on renvoie la liste des positions des cases atteignables
@@ -518,6 +502,7 @@ public class EscampeBoard implements Etat {
 		}
 	}
 	
+	//TESTS
 	
 	public static void main (String[] args){
 		
@@ -567,10 +552,18 @@ public class EscampeBoard implements Etat {
         for(String m : pm) {
             System.out.print(m+",");
         }
+        
+        // On test la fonction qui genere les mouvements possibles pour un seul pion (moins gourmande)
+        String[] pmp = eb.possibleMovesForOnePawn("B5", "noir");
+        System.out.println("");
+        System.out.println("Liste des coups possibles pour B5 : ");
+        for(String m : pmp) {
+            System.out.print(m+",");
+        }
 	}
 	
 	
-	/***********************************************************************************Fonctions necessaires pour la recherche de chemin **********************************************************************/
+	/******************************************************Fonctions necessaires pour les algorithmes **************************************************/
 	
 	
 	//Fonction qui servira pour enumerer les successeurs lors de la recherche de chemin
@@ -642,5 +635,43 @@ public class EscampeBoard implements Etat {
 		}
 		return board;
 	}
-		
+	
+
+	//Fonction qui calcule les coups possibles pour un pion donne, sachant qu'il est sur un lisere egal a lastlisere
+	public String[] possibleMovesForOnePawn(String pawn, String player){
+		String[] pions;
+		if (player.contains("blanc")) {
+			pions = this.white;
+		}
+		else {
+			pions = this.black;
+		}
+		//ArrayList des differents coups possibles qu'on va remplir par la suite
+		ArrayList<String> possible_moves = new ArrayList<>();
+		//On met dans une ArrayList la position du pion ainsi que une direction "nul" qui represente la direction de la ou on vient dans l'exploration des cases (donc nul au depart)
+		ArrayList<String> pion = new ArrayList<>();
+		//On distingue les licornes aux paladins
+		if (pawn.contains(pions[0])) {
+			pion.add(pawn+"/l/nul");
+		}
+		else {
+			pion.add(pawn+"/p/nul");
+		}
+		//ArrayList des differentes cases atteignables
+		ArrayList<String> cases_atteignables = explore_adjacents_rec (pion, player, 0, liserePlateau[get_i_from_string(pawn)][get_j_from_string(pawn)]);
+		//On recupere les coups possibles
+		for (String c : cases_atteignables) {
+			String move = pawn+"-"+c.split("/")[0];
+			//On ajoute pas les mouvements deja presents
+			if (!possible_moves.contains(move)) {
+				possible_moves.add(move);
+			}
+		}
+		//On convertit l'array en un tableau
+		String[] possible_moves_tab = new String[possible_moves.size()];
+		for (int i=0; i<possible_moves.size();i++) {
+			possible_moves_tab[i]=possible_moves.get(i);
+		}
+		return possible_moves_tab;
+	}
 }
