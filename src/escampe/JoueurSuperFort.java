@@ -76,12 +76,9 @@ public class JoueurSuperFort implements IJoueur{
 				System.out.print(m+ ",");
 				
 			}
-			System.out.println("\n");
-			if(moves.length == 4) {
-				System.err.println("t");
-			}
+			
 			Probleme pb = new ProblemeEscampe( initial, "Pb escampe");
-			System.err.println(pb.successeurs(initial).size());
+			//System.err.println(pb.successeurs(initial).size());
 			
 			// Avec AlphaBeta
 			//String meilleurCoup = algo.meilleurCoup(pb);
