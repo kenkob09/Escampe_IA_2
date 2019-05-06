@@ -26,13 +26,13 @@ public class JoueurSuperFort implements IJoueur{
 		//board.setFromFile("\\src\\data\\plateau1.txt");
 		if(mycolour == -1) {
 			this.algo = new AlphaBeta(h3, "blanc", "noir");
-			this.algoID = new IDAlphaBeta(hfinal, "blanc", "noir");
+			this.algoID = new IDAlphaBeta(h3, "blanc", "noir");
 			this.algoNegAB = new NegAlphaBeta(h3);
 			player = "blanc";
 		}
 		else {
 			this.algo = new AlphaBeta(h3, "noir", "blanc");
-			this.algoID = new IDAlphaBeta(hfinal, "noir", "blanc");
+			this.algoID = new IDAlphaBeta(h3, "noir", "blanc");
 			this.algoNegAB = new NegAlphaBeta(h3);
 			player = "noir";
 		}
