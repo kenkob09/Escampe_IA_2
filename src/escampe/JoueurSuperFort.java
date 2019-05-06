@@ -32,7 +32,7 @@ public class JoueurSuperFort implements IJoueur{
 		}
 		else {
 			this.algo = new AlphaBeta(h3, "noir", "blanc");
-			this.algoID = new IDAlphaBeta(h2, "noir", "blanc");
+			this.algoID = new IDAlphaBeta(hfinal, "noir", "blanc");
 			this.algoNegAB = new NegAlphaBeta(h3);
 			player = "noir";
 		}
@@ -48,7 +48,7 @@ public class JoueurSuperFort implements IJoueur{
 	public String choixMouvement() {
 		
 		//TODO : Premier mouvement a mieux choisir
-		String w = "B2/A1/B1/C2/E2/F2";
+		String w = "F1/A1/B1/C2/E2/F2";
 		String b = "C6/A6/B5/D5/E6/F5";
 		
 		String coupJoue;

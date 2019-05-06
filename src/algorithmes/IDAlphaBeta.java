@@ -86,7 +86,7 @@ public class IDAlphaBeta {
  	   
  	   nbfeuilles=0;
  	   
- 	   System.err.println("IDAlphaBeta.meilleurCoup() joueur, h : "+this.joueurMax+" "+ this.h.toString());
+ 	   //System.err.println("IDAlphaBeta.meilleurCoup() joueur, h : "+this.joueurMax+" "+ this.h.toString());
  	   
  	   //EscampeBoard eb = new EscampeBoard(p.getWhite().clone(), p.getBlack().clone(), Integer.valueOf(p.getLastLisere()));
  	   EtatEscampe ee = (EtatEscampe) p.getEtatInitial(); 
@@ -106,7 +106,7 @@ public class IDAlphaBeta {
  	   long waitedTime = 0;
  	   
  	   for(int i = 0; i < le.size(); i++) {
- 		
+ 		   
  		   nbnoeuds++;
  		   String nextCoup = ((EtatEscampe) le.get(i)).getLastMove();
  		   
@@ -163,7 +163,7 @@ private float minMaxAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h, int pr
 	else { // Profondeur > 0
     	LinkedList<Etat> le =  (LinkedList<Etat>) p.successeurs(ee);
 		
-    	for(int i = 1; i < le.size(); i++) {
+    	for(int i = 0; i < le.size(); i++) {
    		   nbnoeuds++;
    		   
    		   beta = Math.min(beta, maxMinAlphaBeta(p, ((EtatEscampe) le.get(i)),h, profondeur - 1, alpha, beta));
@@ -182,7 +182,6 @@ private float minMaxAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h, int pr
     	
     	EscampeBoard eb = new EscampeBoard(ee.getWhite().clone(), ee.getBlack().clone(), Integer.valueOf(ee.getLastLisere()));
     	
-    	
     	if ((profondeur <= 0) || (eb.gameOver())) {	// Si profondeur atteinte
     		
     		if (eb.gameOver()){
@@ -197,10 +196,10 @@ private float minMaxAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h, int pr
     	else { // Profondeur > 0
     		LinkedList<Etat> le =  (LinkedList<Etat>) p.successeurs(ee);
     		
-        	for(int i = 1; i < le.size(); i++) {
+        	for(int i = 0; i < le.size(); i++) {
        		   nbnoeuds++;
        		   
-       		   alpha = Math.max(beta, minMaxAlphaBeta(p, ((EtatEscampe) le.get(i)),h, profondeur - 1, alpha, beta));
+       		   alpha = Math.max(alpha, minMaxAlphaBeta(p, ((EtatEscampe) le.get(i)),h, profondeur - 1, alpha, beta));
       
        		   if (alpha>=beta){
       			
