@@ -1,8 +1,3 @@
-/**
-aaaaa
- * 
- */
-
 package algorithmes;
 
 import java.util.ArrayList;
@@ -16,9 +11,10 @@ import modeles.Heuristique;
 import modeles.Etat;
 import modeles.Heuristique;
 import modeles.Probleme;
+public class IDAlphaBeta {
 
-public class AlphaBeta {
 	
+
     /** La profondeur de recherche par défaut
      */
     private final static int PROFMAXDEFAUT = 10;
@@ -56,16 +52,16 @@ public class AlphaBeta {
   // -------------------------------------------
   // Constructeurs
   // -------------------------------------------
-    public AlphaBeta(Heuristique h, String joueurMax, String joueurMin) {
+    public IDAlphaBeta(Heuristique h, String joueurMax, String joueurMin) {
         this(h,joueurMax,joueurMin,PROFMAXDEFAUT);
     }
 
-    public AlphaBeta(Heuristique h, String joueurMax, String joueurMin, int profMaxi) {
+    public IDAlphaBeta(Heuristique h, String joueurMax, String joueurMin, int profMaxi) {
         this.h = h;
         this.joueurMin = joueurMin;
         this.joueurMax = joueurMax;
         profMax = profMaxi;
-//		System.out.println("Initialisation d'un MiniMax de profondeur " + profMax);
+//			System.out.println("Initialisation d'un MiniMax de profondeur " + profMax);
     }
 
    // -------------------------------------------
@@ -354,3 +350,4 @@ private float minMaxAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h, int pr
 		return joueurMax;
 	}
 }
+

@@ -119,13 +119,13 @@ public class JoueurSuperFort implements IJoueur{
 			EtatEscampe initial = new EtatEscampe(board.getWhite(), board.getBlack(), player, board.getLastLisere());
 			
 			String[] moves = board.possibleMoves(player);
-			/*
+			
 			if (moves.length == 0) {
 				return "E";
 			}
-			*/
 			
-			//System.out.println("Coups possibles de "+initial.getPlayer()+":");
+			
+			System.out.println("Coups possibles de "+initial.getPlayer()+":");
 			//System.err.println(algo.getJoueurMax());
 			
 			for(String m : moves) {
@@ -133,7 +133,15 @@ public class JoueurSuperFort implements IJoueur{
 				
 			}
 			System.out.println("\n");
-			coupJoue = this.algo.meilleurCoup(initial);
+			
+			Probleme pb = new ProblemeEscampe( initial, "Pb escampe");
+			System.err.println(pb.successeurs(initial).size());
+			
+			String meilleurCoup = algo.meilleurCoup(pb);
+			
+			System.out.println("Meilleur Coup : "+ meilleurCoup);
+			coupJoue = meilleurCoup;
+			
 			
 			//Si le coup choisi est fatal, on renvoit xxxxx pour signaler la fin de partie
 			
@@ -163,11 +171,14 @@ public class JoueurSuperFort implements IJoueur{
 	@Override
 	public void mouvementEnnemi(String coup) {
 		// TODO Auto-generated method stub
-		if(player == "blanc") {
-			board.play(coup, "noir");
-		}
-		else {
-			board.play(coup, "blanc");
+		if(!(coup.compareTo("E") == 0)) {
+			// Le joueur ne passe pas son tour
+			if(player == "blanc") {
+				board.play(coup, "noir");
+			}
+			else {
+				board.play(coup, "blanc");
+			}
 		}
 		
 		print_board();

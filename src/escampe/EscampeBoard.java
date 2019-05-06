@@ -273,11 +273,11 @@ public class EscampeBoard implements Etat {
 		
 		
 		/************AENLEVER****************/
-		System.out.print("NOUVEAUX MOUVEMENTS : ");
+		//TODO : System.out.print("NOUVEAUX MOUVEMENTS : ");
 		for (int i=0; i<possible_moves_tab.length;i++) {
-			System.out.print(possible_moves_tab[i]+" , ");
+			//System.out.print(possible_moves_tab[i]+" , ");
 		}
-		System.out.println("");
+		//System.out.println("");
 		
 		
 		
