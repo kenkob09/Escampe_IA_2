@@ -3,10 +3,13 @@ package escampe;
 import modeles.Etat;
 import modeles.Heuristique;
 
+
+/**
+ *  Heuristiques propre à l'escampe
+ * 	*/
 public class HeuristiqueEscampe implements Heuristique{
 
 	String player;
-	
 
 	public HeuristiqueEscampe(String player) {
 		this.player=player;

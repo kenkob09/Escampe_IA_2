@@ -15,7 +15,6 @@ public class ProblemeEscampe extends Probleme{
 	
 	public ProblemeEscampe(Etat eInit, String nom) {
 		super(eInit, nom);
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
@@ -33,7 +32,7 @@ public class ProblemeEscampe extends Probleme{
         if ((e instanceof EtatEscampe) && (!this.isTerminal(e))) {
             EtatEscampe etat = (EtatEscampe) e;
             //On fait des copies pour eviter les effets de bords
-            EscampeBoard eb = new EscampeBoard(etat.getWhite().clone(),etat.getBlack().clone(),new Integer(etat.getLastLisere()));
+            EscampeBoard eb = new EscampeBoard(etat.getWhite().clone(),etat.getBlack().clone(), Integer.valueOf(etat.getLastLisere()));
             
             for(String m : eb.possibleMoves(etat.getPlayer())) {
             	
