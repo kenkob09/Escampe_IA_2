@@ -8,15 +8,14 @@ import modeles.Heuristique;
 import modeles.Probleme;
 
 public class AlphaBeta {
-	
-    /** La profondeur de recherche par défaut
-     */
-    private final static int PROFMAXDEFAUT = 1;
-
    
     // -------------------------------------------
     // Attributs
     // -------------------------------------------
+	
+    /** La profondeur de recherche par défaut
+     */
+    private final static int PROFMAXDEFAUT = 10;
  
     /**  La profondeur de recherche utilisée pour l'algorithme
      */

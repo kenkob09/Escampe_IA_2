@@ -19,17 +19,14 @@ import modeles.Probleme;
  * 	d'éviter le besoin d'alterné joueurMin, joueurMax à chaque itération*/
 
 public class IDAlphaBeta {
-
-	
-
-    /** La profondeur de recherche par défaut
-     */
-    private final static int PROFMAXDEFAUT = 1;
-
    
     // -------------------------------------------
     // Attributs
     // -------------------------------------------
+	
+    /** La profondeur de recherche par défaut
+     */
+    private final static int PROFMAXDEFAUT = 1;
  
     /**  La profondeur de recherche utilisée pour l'algorithme
      */
@@ -140,11 +137,12 @@ public class IDAlphaBeta {
 	   			alpha = newAlpha;
 	   		
  		   }
- 		   // Si on a le temps, on va plus profondément
+ 		   // Estimation du temps 
  		   waitedTime += (waitedTime2 - waitedTime1) + 1;
  		  
  		   //System.out.println("Temps écoulé: "+waitedTime);
- 		  
+ 		   
+ 		   // Si on a le temps, on va plus profondement
  		  if(waitedTime >= tempsMax) {
  			  System.err.println("Time over");
  			  profMax = 0;
@@ -163,40 +161,40 @@ public class IDAlphaBeta {
  	   return mCoup;
     }
     
-private float minMaxAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h, int profondeur, float alpha, float beta){
-	
-	EscampeBoard eb = new EscampeBoard(ee.getWhite().clone(), ee.getBlack().clone(), Integer.valueOf(ee.getLastLisere()));
-    	
-	if ((profondeur <= 0) || (eb.gameOver())) {	// Si profondeur atteinte
+	private float minMaxAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h, int profondeur, float alpha, float beta){
 		
-		if (eb.gameOver()){
-    			
-			nbnoeuds--;
+		EscampeBoard eb = new EscampeBoard(ee.getWhite().clone(), ee.getBlack().clone(), Integer.valueOf(ee.getLastLisere()));
+	    	
+		if ((profondeur <= 0) || (eb.gameOver())) {	// Si profondeur atteinte
+			
+			if (eb.gameOver()){
+	    			
+				nbnoeuds--;
+			}
+	    		
+			nbfeuilles++;
+			//System.err.println("h: "+this.h.eval(ee));
+			return this.h.eval(ee);	
+	    	
 		}
-    		
-		nbfeuilles++;
-		//System.err.println("h: "+this.h.eval(ee));
-		return this.h.eval(ee);	
-    	
+		else { // Profondeur > 0
+	    	
+			LinkedList<Etat> le =  (LinkedList<Etat>) p.successeurs(ee);
+			
+	    	for(int i = 0; i < le.size(); i++) {
+	    		//System.err.println("bon joueur: "+((EtatEscampe) le.get(0)).getPlayer());
+	   		   nbnoeuds++;
+	   		   beta = Math.min(beta, maxMinAlphaBeta(p, ((EtatEscampe) le.get(i)),h, profondeur - 1, alpha, beta));
+	   		   
+	   		   if (alpha>=beta){
+	   			   
+	   			   return alpha;  			   
+	   			
+	  	   		}
+	   	   }		
+		}
+		return beta;
 	}
-	else { // Profondeur > 0
-    	
-		LinkedList<Etat> le =  (LinkedList<Etat>) p.successeurs(ee);
-		
-    	for(int i = 0; i < le.size(); i++) {
-    		//System.err.println("bon joueur: "+((EtatEscampe) le.get(0)).getPlayer());
-   		   nbnoeuds++;
-   		   beta = Math.min(beta, maxMinAlphaBeta(p, ((EtatEscampe) le.get(i)),h, profondeur - 1, alpha, beta));
-   		   
-   		   if (alpha>=beta){
-   			   
-   			   return alpha;  			   
-   			
-  	   		}
-   	   }		
-	}
-	return beta;
-}
     
     private float maxMinAlphaBeta (Probleme p, EtatEscampe ee, Heuristique h,int profondeur, float alpha, float beta){
     	
