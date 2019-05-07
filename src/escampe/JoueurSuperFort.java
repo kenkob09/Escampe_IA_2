@@ -63,24 +63,25 @@ public class JoueurSuperFort implements IJoueur{
 			if(board.gameOver()) {
 				return "xxxxx";
 			}
+			
+			// Définition de l'état initial correspondant au plateau actuel
 			EtatEscampe initial = new EtatEscampe(board.getWhite(), board.getBlack(), player, board.getLastLisere());
 			
 			String[] moves = board.possibleMoves(player);
 			
+			// Si il n'y a pas de coup possibles
 			if (moves.length == 0) {
 				return "E";
 			}
 			
 			System.out.println("Coups possibles de "+initial.getPlayer()+":");
-			//System.err.println(algo.getJoueurMax());
-			
+						
 			for(String m : moves) {
 				System.out.print(m+ ",");
 				
 			}
 			
-			Probleme pb = new ProblemeEscampe( initial, "Pb escampe");
-			//System.err.println(pb.successeurs(initial).size());
+			Probleme pb = new ProblemeEscampe( initial, "Probleme escampe");
 			
 			// Avec AlphaBeta
 			//String meilleurCoup = algo.meilleurCoup(pb);
