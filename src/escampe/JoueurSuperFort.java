@@ -78,10 +78,10 @@ public class JoueurSuperFort implements IJoueur{
 			Probleme pb = new ProblemeEscampe( initial, "Probleme escampe");
 			
 			// Avec AlphaBeta
-			String meilleurCoup = algo.meilleurCoup(pb);
+			//String meilleurCoup = algo.meilleurCoup(pb);
 			
 			// Avec IterativeAlphaBeta
-			//String meilleurCoup = algoID.meilleurCoup(pb);
+			String meilleurCoup = algoID.meilleurCoup(pb);
 			
 			// Avec NegAlphaBeta
 			//String meilleurCoup = algoNegAB.meilleurCoup(pb);
