@@ -42,11 +42,11 @@ public class HeuristiqueEscampe implements Heuristique{
 			
 			//Si la licorne ami est morte
 			if ( pions_ami[0].contains("ZZ") ) {
-				return -10000000;
+				return Integer.MIN_VALUE;
 			}
 			//Si la licorne ennemi est morte
 			if ( pions_ennemi[0].contains("ZZ") ) {
-				return 10000000;
+				return Integer.MAX_VALUE;
 			}
 			
 			//EscampeBoard correspondant a l'etat

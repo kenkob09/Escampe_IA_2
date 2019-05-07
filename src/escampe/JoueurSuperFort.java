@@ -2,11 +2,9 @@ package escampe;
 
 import algorithmes.AlphaBeta;
 import algorithmes.IDAlphaBeta;
-import algorithmes.NegAlphaBeta;
 import modeles.Etat;
 import modeles.Heuristique;
 import modeles.Probleme;
-import modeles.Solution;
 
 public class JoueurSuperFort implements IJoueur{
 
@@ -15,7 +13,6 @@ public class JoueurSuperFort implements IJoueur{
 	private HeuristiqueEscampe hOP;
 	private AlphaBeta algo;
 	private IDAlphaBeta algoID;
-	private NegAlphaBeta algoNegAB;
 	
 	@Override
 	public void initJoueur(int mycolour) {
@@ -25,14 +22,12 @@ public class JoueurSuperFort implements IJoueur{
 			this.hOP = new HeuristiqueEscampe("blanc");
 			this.algo = new AlphaBeta(hOP, "blanc", "noir");
 			this.algoID = new IDAlphaBeta(hOP, "blanc", "noir");
-			this.algoNegAB = new NegAlphaBeta(hOP);
 			player = "blanc";
 		}
 		else {
 			this.hOP = new HeuristiqueEscampe("noir");
 			this.algo = new AlphaBeta(hOP, "noir", "blanc");
 			this.algoID = new IDAlphaBeta(hOP, "noir", "blanc");
-			this.algoNegAB = new NegAlphaBeta(hOP);
 			player = "noir";
 		}
 	}

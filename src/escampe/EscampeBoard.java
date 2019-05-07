@@ -71,8 +71,6 @@ public class EscampeBoard implements Etat {
     	this.black = new String[6];
     	last_lisere = 0;
     }
-	
-
     
 	//Methodes demandees
 	public void setFromFile(String fileName){
