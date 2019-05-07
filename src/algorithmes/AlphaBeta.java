@@ -86,7 +86,7 @@ public class AlphaBeta {
  	   // Initialisation
  	   float alpha = maxMinAlphaBeta(p, ee, this.h, this.profMax-1, -1000000, 1000000);
  	   String firstCoup = ((EtatEscampe) le.get(0)).getLastMove();
- 	   //System.err.println("firstMove: "+firstCoup);
+ 	   System.err.println("firstMove: "+firstCoup);
  	   String mCoup = firstCoup;
  	   // Foreach successeurs
  	   for(int i = 1; i < le.size(); i++) {
