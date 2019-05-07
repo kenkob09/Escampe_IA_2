@@ -49,7 +49,8 @@ public class ProblemeEscampe extends Probleme{
             	System.out.print("black : ");
             	eb.print_black();
             	System.out.print("blanc : ");
-            	eb.print_white();*/
+            	eb.print_white();
+            	*/
             	            	
             	//On fait des copies pour eviter les effets de bords
             	String[] white = etat.getWhite().clone();

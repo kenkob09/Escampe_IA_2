@@ -107,18 +107,20 @@ public class HeuristiquesEscampe {
 					int j_min_distance = Math.abs(j_l_ennemi - EscampeBoard.get_j_from_string(pions_ami[i]));
 					//sum_dist_max doit etre grand, sum_dist_min doit etre petit
 					if( (i_max_distance + j_max_distance)<=3 ) {
-						//Un paladin a une distance inferieur a 3 a plus de poids que le reste
-						i_max_distance = i_max_distance*2;
-						j_max_distance = j_max_distance*2;
+						//Un paladin ennemi a une distance inferieur a 3 de la licorne ami a 2* plus de poids que le reste
+						i_max_distance = i_max_distance/2;
+						j_max_distance = j_max_distance/2;
 					}
 					if( (i_min_distance + j_min_distance)<=3 ) {
-						//Un paladin a une distance inferieur a 3 a plus de poids que le reste
-						i_min_distance = i_min_distance*2;
-						j_min_distance = j_min_distance*2;
+						//Un paladin ami a une distance inferieur a 3 de la licorne ennemi a 2* plus de poids que le reste
+						i_min_distance = i_min_distance/2;
+						j_min_distance = j_min_distance/2;
 					}
 					sum_dist_max += (i_max_distance + j_max_distance);
 					sum_dist_min += (i_min_distance + j_min_distance);
 				}
+				/**System.out.println("Last move : "+ee.getLastMove());
+				System.out.println("Valeur de l'heuristique h3 : "+(sum_dist_max - sum_dist_min));**/
 				return sum_dist_max - sum_dist_min;
             } else {
                 throw new Error("Cette heursitique ne peut s'appliquer que sur des EtatEscampe");
@@ -200,7 +202,7 @@ public class HeuristiquesEscampe {
 						}
 						if( dist_min<=3 ) {
 							//Un paladin ami a une distance inferieur a 3 de la licorne ennemi a 2* plus de poids que le reste
-							sum_dist_min += dist_min*2;
+							sum_dist_min += dist_min/2;
 						}
 						else {
 							sum_dist_min += dist_min;

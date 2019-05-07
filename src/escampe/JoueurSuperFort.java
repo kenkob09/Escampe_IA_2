@@ -33,7 +33,7 @@ public class JoueurSuperFort implements IJoueur{
 		else {
 			this.algo = new AlphaBeta(h3, "noir", "blanc");
 
-			this.algoID = new IDAlphaBeta(hfinal, "noir", "blanc");
+			this.algoID = new IDAlphaBeta(h3, "noir", "blanc");
 
 			this.algoNegAB = new NegAlphaBeta(h3);
 			player = "noir";
