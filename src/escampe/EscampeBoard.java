@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import modeles.Etat;
@@ -241,7 +242,7 @@ public class EscampeBoard implements Etat {
 			}
 		}
 		//ArrayList des differents coups possibles qu'on va remplir par la suite
-		ArrayList<String> possible_moves = new ArrayList<>();
+		LinkedList<String> possible_moves = new LinkedList<>();
 		//Pour chaque pions deplacables, on regarde ses differentes cases atteignables
 		for (String p : pions_deplacables) {
 			//On met dans une ArrayList la position du pion ainsi que une direction "nul" qui represente la direction de la ou on vient dans l'exploration des cases (donc nul au depart)
@@ -256,13 +257,20 @@ public class EscampeBoard implements Etat {
 			ArrayList<String> cases_atteignables = explore_adjacents_rec (pion, player, 0, liserePlateau[get_i_from_string(p)][get_j_from_string(p)]);
 			//On recupere les coups possibles
 			for (String c : cases_atteignables) {
-				String move = p+"-"+c.split("/")[0];
+				String cases = c.split("/")[0];
+				String move = p+"-"+cases;
 				//On ajoute pas les mouvements deja presents
 				if (!possible_moves.contains(move)) {
-					possible_moves.add(move);
+					//On recupere les mouvements qui prennent la licorne ennemie pour les placer au debut du tableau
+					if ( (cases.contains(white[0]))||(cases.contains(black[0])) ) {
+						possible_moves.addFirst(move);
+					}
+					else {
+						possible_moves.add(move);
+					}
 				}
 			}
-		}		
+		}	
 		//On convertit l'array en un tableau
 		String[] possible_moves_tab = new String[possible_moves.size()];
 		for (int i=0; i<possible_moves.size();i++) {
@@ -502,68 +510,9 @@ public class EscampeBoard implements Etat {
 		}
 	}
 	
-	//TESTS
-	
-	public static void main (String[] args){
-		
-		String s = "";
-		String[] ss = s.split("/");
-		
-		System.err.println(ss.length );
-		//Tests
-	
-		EscampeBoard eb = new EscampeBoard();
-	    //Definition du chemin actuel
-	    String projectDir = Paths.get(".").toAbsolutePath().normalize().toString();
-	 
-	    // Test setFromFile
-	    eb.setFromFile("\\src\\data\\plateau1.txt");	    
-	    
-	    // Test saveToFile
-	    eb.saveToFile("\\src\\data\\sauvegarde.txt");
-	    
-	    //Test to display the board
-	    eb.print_board();
-	    
-	    // Test isValideMove
-	    System.out.println("");
-	    boolean verdict = eb.isValidMove("A1-A2", "blanc");
-	    System.out.print("Is A1-A2 a valid move for white ? -> ");
-	    System.out.println(verdict);
-	    boolean verdict2 = eb.isValidMove("C2-A2", "blanc");
-	    System.out.print("Is C2-A2 a valid move for white ? -> ");
-	    System.out.println(verdict2);
-	    System.out.println("");
-	    
-	    System.out.println("blanc plays B2-B3");
-	    eb.play("B2-B3","blanc");
-	    eb.print_board();
-	    
-	    System.out.println("");
-	    boolean verdict3 = eb.isValidMove("B5-B2", "noir");
-	    System.out.print("Is B5-B2 a valid move for black ? -> ");
-	    System.out.println(verdict3);
-	    System.out.println("");
-        
-	    // On cherche tous les moves
-        String[] pm = eb.possibleMoves("noir");
-        System.out.println("");
-        System.out.println("Liste des coups possibles pour NOIR : ");
-        for(String m : pm) {
-            System.out.print(m+",");
-        }
-        
-        // On test la fonction qui genere les mouvements possibles pour un seul pion (moins gourmande)
-        String[] pmp = eb.possibleMovesForOnePawn("B5", "noir");
-        System.out.println("");
-        System.out.println("Liste des coups possibles pour B5 : ");
-        for(String m : pmp) {
-            System.out.print(m+",");
-        }
-	}
 	
 	
-	/******************************************************Fonctions necessaires pour les algorithmes **************************************************/
+/******************************************************Fonctions necessaires pour les algorithmes **************************************************/
 	
 	
 	//Fonction qui servira pour enumerer les successeurs lors de la recherche de chemin
@@ -647,7 +596,7 @@ public class EscampeBoard implements Etat {
 			pions = this.black;
 		}
 		//ArrayList des differents coups possibles qu'on va remplir par la suite
-		ArrayList<String> possible_moves = new ArrayList<>();
+		LinkedList<String> possible_moves = new LinkedList<>();
 		//On met dans une ArrayList la position du pion ainsi que une direction "nul" qui represente la direction de la ou on vient dans l'exploration des cases (donc nul au depart)
 		ArrayList<String> pion = new ArrayList<>();
 		//On distingue les licornes aux paladins
@@ -661,10 +610,17 @@ public class EscampeBoard implements Etat {
 		ArrayList<String> cases_atteignables = explore_adjacents_rec (pion, player, 0, liserePlateau[get_i_from_string(pawn)][get_j_from_string(pawn)]);
 		//On recupere les coups possibles
 		for (String c : cases_atteignables) {
-			String move = pawn+"-"+c.split("/")[0];
+			String cases = c.split("/")[0];
+			String move = pawn+"-"+cases;
 			//On ajoute pas les mouvements deja presents
 			if (!possible_moves.contains(move)) {
-				possible_moves.add(move);
+				//On recupere les mouvements qui prennent la licorne ennemie pour les placer au debut du tableau
+				if ( (cases.contains(white[0]))||(cases.contains(black[0])) ) {
+					possible_moves.addFirst(move);
+				}
+				else {
+					possible_moves.add(move);
+				}
 			}
 		}
 		//On convertit l'array en un tableau
@@ -673,5 +629,88 @@ public class EscampeBoard implements Etat {
 			possible_moves_tab[i]=possible_moves.get(i);
 		}
 		return possible_moves_tab;
+	}
+
+
+	
+	
+	/****************************************************** Tests **************************************************/	
+	public static void main (String[] args){
+		
+		String s = "";
+		String[] ss = s.split("/");
+		
+		System.err.println(ss.length );
+		//Tests
+	
+		EscampeBoard eb = new EscampeBoard();
+	    //Definition du chemin actuel
+	    String projectDir = Paths.get(".").toAbsolutePath().normalize().toString();
+	 
+	    // Test setFromFile
+	    eb.setFromFile("\\src\\data\\plateau1.txt");	    
+	    
+	    // Test saveToFile
+	    eb.saveToFile("\\src\\data\\sauvegarde.txt");
+	    
+	    //Test to display the board
+	    eb.print_board();
+	    
+	    // Test isValideMove
+	    System.out.println("");
+	    boolean verdict = eb.isValidMove("A1-A2", "blanc");
+	    System.out.print("Is A1-A2 a valid move for white ? -> ");
+	    System.out.println(verdict);
+	    boolean verdict2 = eb.isValidMove("C2-A2", "blanc");
+	    System.out.print("Is C2-A2 a valid move for white ? -> ");
+	    System.out.println(verdict2);
+	    System.out.println("");
+	    
+	    System.out.println("blanc plays B2-B3");
+	    eb.play("B2-B3","blanc");
+	    eb.print_board();
+	    
+	    System.out.println("");
+	    boolean verdict3 = eb.isValidMove("B5-B2", "noir");
+	    System.out.print("Is B5-B2 a valid move for black ? -> ");
+	    System.out.println(verdict3);
+	    System.out.println("");
+        
+	    // On cherche tous les moves
+        String[] pm = eb.possibleMoves("noir");
+        System.out.println("");
+        System.out.println("Liste des coups possibles pour NOIR : ");
+        for(String m : pm) {
+            System.out.print(m+",");
+        }
+        
+        // On test la fonction qui genere les mouvements possibles pour un seul pion (moins gourmande)
+        String[] pmp = eb.possibleMovesForOnePawn("B5", "noir");
+        System.out.println("");
+        System.out.println("Liste des coups possibles pour B5 : ");
+        for(String m : pmp) {
+            System.out.print(m+",");
+        }
+        System.out.println("");
+        
+        /*
+        // On test la fonction successeurs
+        EtatEscampe ee = new EtatEscampe(eb.white, eb.black, "noir", 3, "B2-B3");
+        ProblemeEscampe pe = new ProblemeEscampe(ee,"pb escampe");
+        LinkedList<Etat> succ = (LinkedList<Etat>) pe.successeurs(ee);
+        System.out.println("Voici les etats successeurs de l'etat ci dessus");
+        EtatEscampe ees = ee;
+        for (Etat e : succ) {
+        	ees = (EtatEscampe) e;
+        	System.out.print("Joueur : ");
+        	System.out.println(ees.getPlayer());
+        }
+        System.out.println("Puis les etats successeurs du dernier etat successeur");
+        succ = (LinkedList<Etat>) pe.successeurs(ees);
+        for (Etat e : succ) {
+        	ees = (EtatEscampe) e;
+        	System.out.print("Joueur : ");
+        	System.out.println(ees.getPlayer());
+        }*/
 	}
 }

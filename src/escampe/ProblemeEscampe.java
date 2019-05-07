@@ -42,16 +42,6 @@ public class ProblemeEscampe extends Probleme{
             
             for(String m : eb.possibleMoves(etat.getPlayer())) {
             	
-            	/*
-            	System.out.println("joueur : "+etat.getPlayer());
-            	System.out.println("lastlisere : "+eb.getLastLisere());
-            	System.out.println("movement : "+m);
-            	System.out.print("black : ");
-            	eb.print_black();
-            	System.out.print("blanc : ");
-            	eb.print_white();
-            	*/
-            	            	
             	//On fait des copies pour eviter les effets de bords
             	String[] white = etat.getWhite().clone();
             	String[] black = etat.getBlack().clone();

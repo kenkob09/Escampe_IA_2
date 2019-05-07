@@ -12,10 +12,7 @@ public class JoueurSuperFort implements IJoueur{
 
 	public String player;
 	private EscampeBoard board; //TODO : Peut-il etre static avec l'algo IA?
-	private Heuristique h = HeuristiquesEscampe.h;
-	private Heuristique h2 = HeuristiquesEscampe.h2;
-	private Heuristique h3 = HeuristiquesEscampe.h3;
-	private Heuristique hfinal = HeuristiquesEscampe.hfinal;
+	private HeuristiqueEscampe hOP;
 	private AlphaBeta algo;
 	private IDAlphaBeta algoID;
 	private NegAlphaBeta algoNegAB;
@@ -25,17 +22,17 @@ public class JoueurSuperFort implements IJoueur{
 		board = new EscampeBoard();
 		//board.setFromFile("\\src\\data\\plateau1.txt");
 		if(mycolour == -1) {
-			this.algo = new AlphaBeta(h3, "blanc", "noir");
-			this.algoID = new IDAlphaBeta(h3, "blanc", "noir");
-			this.algoNegAB = new NegAlphaBeta(h3);
+			this.hOP = new HeuristiqueEscampe("blanc");
+			this.algo = new AlphaBeta(hOP, "blanc", "noir");
+			this.algoID = new IDAlphaBeta(hOP, "blanc", "noir");
+			this.algoNegAB = new NegAlphaBeta(hOP);
 			player = "blanc";
 		}
 		else {
-			this.algo = new AlphaBeta(h3, "noir", "blanc");
-
-			this.algoID = new IDAlphaBeta(h3, "noir", "blanc");
-
-			this.algoNegAB = new NegAlphaBeta(h3);
+			this.hOP = new HeuristiqueEscampe("noir");
+			this.algo = new AlphaBeta(hOP, "noir", "blanc");
+			this.algoID = new IDAlphaBeta(hOP, "noir", "blanc");
+			this.algoNegAB = new NegAlphaBeta(hOP);
 			player = "noir";
 		}
 	}
@@ -78,16 +75,18 @@ public class JoueurSuperFort implements IJoueur{
 						
 			for(String m : moves) {
 				System.out.print(m+ ",");
-				
 			}
+			System.out.println("");
+			
+			//On instancie le probleme
 			
 			Probleme pb = new ProblemeEscampe( initial, "Probleme escampe");
 			
 			// Avec AlphaBeta
-			//String meilleurCoup = algo.meilleurCoup(pb);
+			String meilleurCoup = algo.meilleurCoup(pb);
 			
 			// Avec IterativeAlphaBeta
-			String meilleurCoup = algoID.meilleurCoup(pb);
+			//String meilleurCoup = algoID.meilleurCoup(pb);
 			
 			// Avec NegAlphaBeta
 			//String meilleurCoup = algoNegAB.meilleurCoup(pb);
@@ -123,7 +122,6 @@ public class JoueurSuperFort implements IJoueur{
 
 	@Override
 	public void mouvementEnnemi(String coup) {
-		// TODO Auto-generated method stub
 		if(!(coup.compareTo("E") == 0)) {
 			// Le joueur ne passe pas son tour
 			if(player == "blanc") {
@@ -135,10 +133,6 @@ public class JoueurSuperFort implements IJoueur{
 		}
 		
 		print_board();
-		//System.out.print("Black :");
-		//board.print_black();
-		//System.out.print("White :");
-		//board.print_white();
 	}
 
 	@Override
