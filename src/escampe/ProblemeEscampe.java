@@ -4,17 +4,12 @@ import java.util.Collection;
 import java.util.LinkedList;
 import modeles.Etat;
 import modeles.Probleme;
-//import sun.awt.SunHints.Value;
-//import problemes.tsp.EtatTSP;
 
-
-/**
- * 	┏━━╮┏┓┏┓╭━┓┏━┓
-	┃┏╮┃┃┃┃┃┃╭┛┃┗┓
-	┃┃┃╰┛┃┃┃┃╰┓┃┗┓
-	┗┛╰━━┛┗┛╰━┛┗━┛﻿
-	@author ramos*/
-
+/** Classe Iterative deepening Alpha Beta
+ * 
+ * @author Kobayashi_Ramos
+ * @see
+ * @version 1*/
 
 public class ProblemeEscampe extends Probleme{
 	

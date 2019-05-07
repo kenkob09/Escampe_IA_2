@@ -8,15 +8,17 @@ import modeles.Etat;
 import modeles.Heuristique;
 import modeles.Probleme;
  
-/** Classe Iterative deepening Alpha Beta*/
+/** Classe Iterative deepening Alpha Beta
+ * 
+ * @author Kobayashi_Ramos
+ * @see
+ * @version 1*/
 
 public class IDAlphaBeta{
 	
-    
- 
- 
+    /** Attributs **/
+	
     private final static int PROFMAXDEFAUT = 1;
-     
     private int profMax = PROFMAXDEFAUT;
     private Heuristique h;
     private int nbnoeuds;
@@ -30,7 +32,8 @@ public class IDAlphaBeta{
     private String joueurMin;
     private String joueurMax;
     
-    /** Constructeurs, définition du temps par défault à 1000ms*/
+    /** Constructeurs, definition du temps par default à 1000ms **/
+    
     public IDAlphaBeta(Heuristique h, String joueurMax, String joueurMin) {
         this(h,joueurMax,joueurMin,PROFMAXDEFAUT, 6000);
     }
@@ -51,10 +54,9 @@ public class IDAlphaBeta{
  
     }
 
-    /** Recherche du meilleur coup pour un problème
+    /** Recherche du meilleur coup pour un probleme selon l'algorithme Alpha Beta Iterative Deepening
      * 
-     * @param Probleme p, le problème à résoudre
-     * */
+     * @param Probleme p, le probleme a resoudre */
     
     public String meilleurCoup(Probleme p) {
     	
@@ -65,7 +67,6 @@ public class IDAlphaBeta{
     	//On initialise le nombre de noeuds et de feuilles developpes par la recherche
     	nbnoeuds=0;
     	nbfeuilles=0;
-    	waitedTime = 0;
     	actualTime = new Date().getTime();
     	
     	// On recupere l'etat initial
@@ -85,8 +86,7 @@ public class IDAlphaBeta{
     	// On recupere le meilleur coup. On commence l'indexation a 1 car on a deja explore le premier coup
     	for(int i = 1; i < le.size(); i++) {
     		
-    		//long waitedTime1 = new Date().getTime();
-    		
+    		//On incremente les noeuds
     		nbnoeuds++;
     		
     		String nextCoup = ((EtatEscampe) le.get(i)).getLastMove();
@@ -101,8 +101,8 @@ public class IDAlphaBeta{
     		
     		// Estimation du temps 
             long waitedTime1 = (actualTime2 - actualTime) + 1;
-    		
-            //System.out.println("Temps écoulé: "+waitedTime);
+    		this.waitedTime = waitedTime1;
+        
             
             // Si on a le temps, on va plus profondement
 	        if(waitedTime1 >= tempsMax) {
@@ -117,12 +117,11 @@ public class IDAlphaBeta{
             }       
     	}
     	System.out.println("Nombre de feuilles développés par la recherche : "+nbfeuilles);
-    	System.out.println("Nombre de noeuds développés par la recherche : "+nbnoeuds);
-    	
-    	profMax = 0;
-    	
+    	System.out.println("Nombre de noeuds développés par la recherche : "+nbnoeuds); 	
     	System.out.print("Temps de la recherche: "+waitedTime+" ms.\n");
     	
+    	//On reinitialise profondeur pour le prochain appel
+    	profMax = 0;
     	return mCoup;
     }
 	    
@@ -134,14 +133,13 @@ public class IDAlphaBeta{
 		long actualTime2 = new Date().getTime();
 		long waitedTime1 = (actualTime2 - actualTime) + 1;
 		
-		
 		// Si profondeur atteinte ou que l'etat est terminal
 		if ((profondeur <= 0) || (eb.gameOver()) || waitedTime1 > this.tempsMax ) {	
 			if (eb.gameOver()){
 				//l'etat est donc une feuille et non un noeud
 				nbnoeuds--;
 			}
-			if(this.waitedTime > this.tempsMax) {
+			if(waitedTime1 > this.tempsMax) {
 				System.err.println("Time Over");
 			}
 			nbfeuilles++;
@@ -154,21 +152,14 @@ public class IDAlphaBeta{
 	    	LinkedList<Etat> le =  (LinkedList<Etat>) p.successeurs(ee);
 	    	for(int i = 1; i < le.size(); i++) {
 	    		
-	    		//long waitedTime1 = new Date().getTime();
-	    		
 	   		   	nbnoeuds++;
 	   		   	//Evaluation la moins favorable
 	   		   	beta = Math.min(beta, maxMinIDAlphaBeta2(p, ((EtatEscampe) le.get(i)),h, profondeur - 1, alpha, beta));
-	   		   	
-	   		   	//long waitedTime2 = new Date().getTime();
-	   		   	
+
 	   		   	//Coupe alpha
 	   		   	if (alpha>=beta){
 	   		   		return alpha; 
-	   		   	}
-	   		   	
-	   		   	//waitedTime += (waitedTime2 - waitedTime1) + 1;
-	   		   	
+	   		   	}   	
    	   		}		
 		}
 		return beta;
@@ -187,7 +178,7 @@ public class IDAlphaBeta{
 			if (eb.gameOver()){
 				nbnoeuds--;
 			}
-			if(this.waitedTime > this.tempsMax) {
+			if(waitedTime1 > this.tempsMax) {
 				System.err.println("Time Over");
 			}
 			nbfeuilles++;
@@ -197,19 +188,12 @@ public class IDAlphaBeta{
 		else { 
 			LinkedList<Etat> le =  (LinkedList<Etat>) p.successeurs(ee);
 	    	for(int i = 1; i < le.size(); i++) {
-	    		
-	    		
-	    		//long waitedTime1 = new Date().getTime();
-	    		
 	    		nbnoeuds++;
 	    		alpha = Math.max(alpha, minMaxIDAlphaBeta2(p, ((EtatEscampe) le.get(i)),h, profondeur - 1, alpha, beta));
-	   		   
-	    		//long waitedTime2 = new Date().getTime();
-	   		   
 	    		if (alpha>=beta){
 	    			return beta;  			   
 	    		}
-	    		//waitedTime += (waitedTime2 - waitedTime1) + 1;
+
     		}		
 		}
 		return alpha;
