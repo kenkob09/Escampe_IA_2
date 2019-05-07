@@ -4,6 +4,7 @@ import java.util.Random;
 
 import algorithmes.AlphaBeta;
 import algorithmes.IDAlphaBeta;
+import modeles.IJoueur;
 import modeles.Probleme;
 
 /** Joueur d'escampe base sur l'interface IJoueur
@@ -120,8 +121,10 @@ public class JoueurSuperFort implements IJoueur{
 		return coupJoue;	// On retroune le coup pour informer l'arbitre
 	}
 
+	
 	@Override
 	public void declareLeVainqueur(int colour) {
+		
 		System.out.println("Je suis dans mon jaccuzzi, t'es dans ta jalousie");
 		System.out.println("░░░░░░░░░░░░░░░░░░░▒▓▓█████████████▓▓▒░░░░░░░░░░░░░░░░░░░░░░");
 		System.out.println("░░░░░░░░░░░░░░▒████▓▓▒▒░▒▒▒░▒▒▒▒▒▒▓▓████▓▒░░░░░░░░░░░░░░░░░░");

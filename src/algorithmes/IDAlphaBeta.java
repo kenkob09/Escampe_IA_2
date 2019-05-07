@@ -32,7 +32,7 @@ public class IDAlphaBeta{
     private String joueurMin;
     private String joueurMax;
     
-    /** Constructeurs, definition du temps par default à 1000ms **/
+    /** Constructeurs, definition du temps par default à 6000ms **/
     
     public IDAlphaBeta(Heuristique h, String joueurMax, String joueurMin) {
         this(h,joueurMax,joueurMin,PROFMAXDEFAUT, 6000);

@@ -1,5 +1,7 @@
 package escampe;
 
+import java.util.ArrayList;
+
 import modeles.Etat;
 import modeles.Heuristique;
 
@@ -16,11 +18,11 @@ public class HeuristiqueEscampe implements Heuristique{
 	}
 	
 	//Heuristique hFinal
-	//Heuristique qu'on va utiliser qui regroupe evalEnd, evalDist et le fait qu'un pion ne doit pas aller sur un lisere qui pourrait mettre en danger sa licorne
+	//Heuristique qu'on va utiliser qui regroupe evalEnd, evalDist, evalLis et le fait qu'un pion ne doit pas aller sur un lisere qui pourrait mettre en danger sa licorne
 	public float eval(Etat e) {
 		if (e instanceof EtatEscampe) {
 			EtatEscampe ee = (EtatEscampe) e;
-			int res=0;
+			float res=0;
 			int i_l_ami,j_l_ami;
 			int i_l_ennemi,j_l_ennemi;
 			int dist_min,dist_max;
@@ -52,6 +54,9 @@ public class HeuristiqueEscampe implements Heuristique{
 			if ( pions_ennemi[0].contains("ZZ") ) {
 				return Integer.MAX_VALUE;
 			}
+			
+			//On evalue evalLis
+			res = this.evalLis(e);
 			
 			//EscampeBoard correspondant a l'etat
 			EscampeBoard eb = new EscampeBoard(ee.getWhite(),ee.getBlack(),ee.getLastLisere());
@@ -211,6 +216,79 @@ public class HeuristiqueEscampe implements Heuristique{
         }
 	}
 	
+	//Heuristique
+	//Heuristique hLis qui etudie les liserés des cases sur lesquels sont positionnés les pions amis/ennemis
+	public float evalLis(Etat e) {
+		if (e instanceof EtatEscampe) {
+			EtatEscampe ee = (EtatEscampe) e;
+			String[] pions_ami, pions_ennemi;
+			
+			//Cas ou le joueur ami est blanc
+			if(this.player.contains("blanc") ) {
+				pions_ami = ee.getWhite();
+				pions_ennemi = ee.getBlack();
+			}
+			//Cas ou le joueur ami est noir
+			else {
+				pions_ennemi = ee.getWhite();
+				pions_ami = ee.getBlack();				
+			}
+			
+			float res = 0;
+			
+			//On regarde les liserés des pions des deux joueurs
+			ArrayList<Boolean> lis = new ArrayList<Boolean>();
+			lis.add(false);
+			lis.add(false);
+			lis.add(false);
+			
+			for (String p : pions_ami) {
+				if (EscampeBoard.liserePlateau[EscampeBoard.get_i_from_string(p)][EscampeBoard.get_j_from_string(p)]==1) {
+					lis.set(0,true);
+				}
+				else if (EscampeBoard.liserePlateau[EscampeBoard.get_i_from_string(p)][EscampeBoard.get_j_from_string(p)]==2) {
+					lis.set(1,true);
+				}
+				else if (EscampeBoard.liserePlateau[EscampeBoard.get_i_from_string(p)][EscampeBoard.get_j_from_string(p)]==3) {
+					lis.set(2,true);
+				}
+			}
+			
+			//Pour chaque type de liseré différent que le joueur ami a, on additionne 20 au resultat
+			for (boolean b : lis) {
+				if (b) {
+					res = res+20;
+				}
+			}
+			
+			lis.set(0,false);
+			lis.set(1,false);
+			lis.set(2,false);
+			
+			for (String p : pions_ennemi) {
+				if (EscampeBoard.liserePlateau[EscampeBoard.get_i_from_string(p)][EscampeBoard.get_j_from_string(p)]==1) {
+					lis.set(0,true);
+				}
+				else if (EscampeBoard.liserePlateau[EscampeBoard.get_i_from_string(p)][EscampeBoard.get_j_from_string(p)]==2) {
+					lis.set(1,true);
+				}
+				else if (EscampeBoard.liserePlateau[EscampeBoard.get_i_from_string(p)][EscampeBoard.get_j_from_string(p)]==3) {
+					lis.set(2,true);
+				}
+			}
+			
+			//Pour chaque type de liseré différent que le joueur ennemi a, on soustrait 20 au resultat
+			for (boolean b : lis) {
+				if (b) {
+					res = res-20;
+				}
+			}
+
+			return res;
+        } else {
+            throw new Error("Cette heursitique ne peut s'appliquer que sur des EtatEscampe");
+        }
+	}
 	
 	//Heuristique hDist
 	public float evalDist(Etat e) {
@@ -283,15 +361,24 @@ public class HeuristiqueEscampe implements Heuristique{
 			
 			//Si la licorne ami est morte
 			if ( pions_ami[0].contains("ZZ") ) {
-				return -10000000;
+				return Integer.MIN_VALUE;
 			}
 			if ( pions_ennemi[0].contains("ZZ") ) {
-				return 10000000;
+				return Integer.MAX_VALUE;
 			}
 			return 0;
         } else {
             throw new Error("Cette heursitique ne peut s'appliquer que sur des EtatEscampe");
         }
+	}
+	
+	//Tests evalLis
+	public static void main(String[] args) {
+		String[] white = {"C6","B5","C5","D5","E5","F5"};
+		String[] black = {"A1","B2","C1","D2","E1","F2"};
+		EtatEscampe ee = new EtatEscampe(white,black,"blanc",0,"A2-A1");
+		HeuristiqueEscampe he = new HeuristiqueEscampe("blanc");
+		System.out.println(he.evalLis(ee));
 	}
 }
 	
