@@ -372,10 +372,10 @@ public class HeuristiqueEscampe implements Heuristique{
         }
 	}
 	
-	//Tests evalLis
+	//Tests Heuristiques
 	public static void main(String[] args) {
-		String[] white = {"C6","B5","C5","D5","E5","F5"};
-		String[] black = {"A1","B2","C1","D2","E1","F2"};
+		String[] white = {"C1","B2","C2","D2","E2","F2"};
+		String[] black = {"F6","E6","E5","C5","C6","A6"};
 		EtatEscampe ee = new EtatEscampe(white,black,"blanc",0,"A2-A1");
 		HeuristiqueEscampe he = new HeuristiqueEscampe("blanc");
 		System.out.println(he.evalLis(ee));
