@@ -2,14 +2,22 @@ package escampe;
 
 import algorithmes.AlphaBeta;
 import algorithmes.IDAlphaBeta;
-import modeles.Etat;
-import modeles.Heuristique;
 import modeles.Probleme;
+
+/** Joueur d'escampe basé sur l'interface IJoueur
+ * 	*/
 
 public class JoueurSuperFort implements IJoueur{
 
+	/**	
+	 * Le joueur à :
+	 * 	- Une couleur
+	 * 	- Un plateau de jeu
+	 * 	- Différentes heuristiques
+	 * */
+	
 	public String player;
-	private EscampeBoard board; //TODO : Peut-il etre static avec l'algo IA?
+	private EscampeBoard board;
 	private HeuristiqueEscampe hOP;
 	private AlphaBeta algo;
 	private IDAlphaBeta algoID;
@@ -52,7 +60,8 @@ public class JoueurSuperFort implements IJoueur{
 		}
 		else {
 			
-			if(board.gameOver()) {
+			
+			if(board.gameOver()) {	// Si la partie est fini
 				return "xxxxx";
 			}
 			
@@ -61,8 +70,7 @@ public class JoueurSuperFort implements IJoueur{
 			
 			String[] moves = board.possibleMoves(player);
 			
-			// Si il n'y a pas de coup possibles
-			if (moves.length == 0) {
+			if (moves.length == 0) {	// Si il n'y a pas de coup possibles
 				return "E";
 			}
 			
@@ -74,14 +82,15 @@ public class JoueurSuperFort implements IJoueur{
 			System.out.println("");
 			
 			//On instancie le probleme
-			
 			Probleme pb = new ProblemeEscampe( initial, "Probleme escampe");
+			
+			// Test avec différents Heuristiques, décommenter pour tester
 			
 			// Avec AlphaBeta
 			//String meilleurCoup = algo.meilleurCoup(pb);
 			
 			// Avec IterativeAlphaBeta
-			String meilleurCoup = algoID.meilleurCoup(pb);
+			String meilleurCoup = algoID.meilleurCoup(pb);	// Itérative Deepening Alpha Beta
 			
 			// Avec NegAlphaBeta
 			//String meilleurCoup = algoNegAB.meilleurCoup(pb);
@@ -89,30 +98,16 @@ public class JoueurSuperFort implements IJoueur{
 			System.out.println("Meilleur Coup : "+ meilleurCoup);
 			coupJoue = meilleurCoup;
 			
-			
-			//Si le coup choisi est fatal, on renvoit xxxxx pour signaler la fin de partie
-			
-//			if (player == "blanc") {
-//				if (moves[0].split("-")[1].contentEquals(board.getBlack()[0])) {
-//					return "xxxxx";
-//				}
-//			}
-//			else {
-//				if (moves[0].split("-")[1].contentEquals(board.getWhite()[0])) {
-//					return "xxxxx";
-//				}
-//			}
-			//coupJoue = moves[0];
 		}
 		
-		board.play(coupJoue,player);
-		return coupJoue;
+		board.play(coupJoue,player);	// On joue le coup pour mettre à jour notre structure de données
+		return coupJoue;	// On retroune le coup pour informer l'arbitre
 	}
 
 	@Override
 	public void declareLeVainqueur(int colour) {
 		// TODO Auto-generated method stub
-		
+		System.out.println("Je suis dans mon jaccuzzi, t'es dans ta jalousie");
 	}
 
 	@Override
