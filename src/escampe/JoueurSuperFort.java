@@ -81,7 +81,6 @@ public class JoueurSuperFort implements IJoueur{
 		//Si on est en milieu de partie
 		else {
 			
-			
 			if(board.gameOver()) {	// Si la partie est fini
 				return "xxxxx";
 			}
@@ -139,19 +138,17 @@ public class JoueurSuperFort implements IJoueur{
 				board.play(coup, "blanc");
 			}
 		}
-		
 		print_board();
 	}
 
 	@Override
 	public String binoName() {
-		// TODO Auto-generated method stub
-		if(player == "blanc")
-			return ("kobayashi");
-		else
-			return ("ramos");
+		return "Ramoyashi Sensei";
 	}
 	
+	/**
+	 * Affiche le plateau actuel
+	 * */
 	public void print_board() {
 		if ( (board.getBlack()[0]!=null)&&(board.getWhite()[0]!=null)&&(!board.gameOver()) ){
 			char[][] eb = board.lists_to_board();
@@ -163,7 +160,7 @@ public class JoueurSuperFort implements IJoueur{
 				}
 				System.out.print("    ");
 				for(int j=0; j<6; j++) {
-					System.out.print(board.liserePlateau[i][j]);
+					System.out.print(EscampeBoard.liserePlateau[i][j]);
 					System.out.print("|");
 				}
 				System.out.println("");
