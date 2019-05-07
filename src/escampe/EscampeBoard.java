@@ -1,26 +1,21 @@
 package escampe;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
 import modeles.Etat;
-
 
 public class EscampeBoard implements Etat {
 	
-	//Attributs
+	/**	Attributs	**/
 	public final static char[] alphabet = {'A','B','C','D','E','F'};
-	
-		
-	//liserePlateau[0][0] depend du sens qu'on a recopie le tableau
+
+	// Lisere du plateau avec Lettres en j et Chiffre en i
     public final static int[][] liserePlateau =
         {
             {1,2,2,3,1,2},
@@ -30,14 +25,27 @@ public class EscampeBoard implements Etat {
             {1,3,1,3,1,2},
             {3,2,2,1,3,2}
         };
-    //Lettres en j
-    //Chiffre en i
-
     
 	private String[] white;
 	private String[] black;
 	private int last_lisere;
 	private String bord_noir;
+
+	/**	Constructeurs	**/
+	public EscampeBoard (String[] w, String[] b, int last_lisere){
+		this.white = new String[6];
+		this.black = new String[6];
+		this.white = w;
+		this.black = b;
+		this.last_lisere = last_lisere;
+	}
+	
+	public EscampeBoard() {
+		// TODO Auto-generated constructor stub
+		this.white = new String[6];
+		this.black = new String[6];
+		last_lisere = 0;
+	}
 	
 	public String[] getWhite() {
 		return this.white;
@@ -57,22 +65,8 @@ public class EscampeBoard implements Etat {
 		return liserePlateau[i][j];
 	}
 	
-	public EscampeBoard (String[] w, String[] b, int last_lisere){
-		this.white = new String[6];
-		this.black = new String[6];
-		this.white = w;
-		this.black = b;
-		this.last_lisere = last_lisere;
-	}
+	/**Methodes de l'interface**/
 	
-    public EscampeBoard() {
-        // TODO Auto-generated constructor stub
-    	this.white = new String[6];
-    	this.black = new String[6];
-    	last_lisere = 0;
-    }
-    
-	//Methodes demandees
 	public void setFromFile(String fileName){
 		String projectDir = Paths.get(".").toAbsolutePath().normalize().toString();
 		String filePath = projectDir + fileName;
@@ -100,12 +94,10 @@ public class EscampeBoard implements Etat {
                             case 'n': black[++pionNoir] = ""+alphabet[j]+""+(iLine+1); 
                                 break;
                             default: break;
-                        }
-                        
+                        }  
                     }
                     iLine++;
                 }
-
             }
 
         } catch (IOException e) {
@@ -137,7 +129,6 @@ public class EscampeBoard implements Etat {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 	
 	public boolean isValidMove(String move, String player){
@@ -277,7 +268,6 @@ public class EscampeBoard implements Etat {
 		return possible_moves_tab;
 	}
 	
-	
 	public ArrayList<String> explore_adjacents_rec (ArrayList<String> cases, String player, int n, int lisere){
 		//Si on a atteint le nombre de mouvements, on renvoie la liste des positions des cases atteignables
 		if (n==lisere) {
@@ -295,12 +285,15 @@ public class EscampeBoard implements Etat {
 	}
 	
 	public ArrayList<String> explore_adjacents (ArrayList<String> cases, String player, int n, int lisere) {		
+		
 		//Tableau des differentes directions
 		String[] directions = {"haut","bas","droite","gauche"};
 		//ArrayList qui sera retourne
 		ArrayList<String> res = new ArrayList<>();
+		
 		//On parcourt les cases a la frontiere
 		for (String c : cases) {
+		
 			//On decompose chaque case de la liste en ses differentes composantes (position,type du pion,direction par laquelle il vient)
 			String[] composantes = c.split("/");
 			String pos = composantes[0];
@@ -308,7 +301,9 @@ public class EscampeBoard implements Etat {
 			String come_from = composantes[2];
 			int start_i = get_i_from_string(pos);
 			int start_j = get_j_from_string(pos);
+			
 			for (String d : directions) {
+			
 				//Pour chaque case, on va explorer les cases adjacentes sauf celle de laquelle on vient
 				if (!d.contains(come_from) ) {
 					if (d.contains("haut")) {
@@ -510,7 +505,7 @@ public class EscampeBoard implements Etat {
 	
 	
 	
-/******************************************************Fonctions necessaires pour les algorithmes **************************************************/
+/**Fonctions personnelles necessaire au jeu	**/
 	
 	
 	//Fonction qui servira pour enumerer les successeurs lors de la recherche de chemin
@@ -560,7 +555,6 @@ public class EscampeBoard implements Etat {
             }
         }
 	}
-	
 	
 	//fonction qui renvoie un plateau 6*6 en fonction d'un etat de jeu passé en parametres
 	public static char[][] given_lists_to_board(String[] w, String[] b){
@@ -632,7 +626,7 @@ public class EscampeBoard implements Etat {
 
 	
 	
-	/****************************************************** Tests **************************************************/	
+	/**	Tests 	**/	
 	public static void main (String[] args){
 		
 		String s = "";
@@ -690,25 +684,5 @@ public class EscampeBoard implements Etat {
             System.out.print(m+",");
         }
         System.out.println("");
-        
-        /*
-        // On test la fonction successeurs
-        EtatEscampe ee = new EtatEscampe(eb.white, eb.black, "noir", 3, "B2-B3");
-        ProblemeEscampe pe = new ProblemeEscampe(ee,"pb escampe");
-        LinkedList<Etat> succ = (LinkedList<Etat>) pe.successeurs(ee);
-        System.out.println("Voici les etats successeurs de l'etat ci dessus");
-        EtatEscampe ees = ee;
-        for (Etat e : succ) {
-        	ees = (EtatEscampe) e;
-        	System.out.print("Joueur : ");
-        	System.out.println(ees.getPlayer());
-        }
-        System.out.println("Puis les etats successeurs du dernier etat successeur");
-        succ = (LinkedList<Etat>) pe.successeurs(ees);
-        for (Etat e : succ) {
-        	ees = (EtatEscampe) e;
-        	System.out.print("Joueur : ");
-        	System.out.println(ees.getPlayer());
-        }*/
 	}
 }
