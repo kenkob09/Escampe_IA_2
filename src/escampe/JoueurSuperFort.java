@@ -6,13 +6,13 @@ import algorithmes.AlphaBeta;
 import algorithmes.IDAlphaBeta;
 import modeles.Probleme;
 
-/** Joueur d'escampe basé sur l'interface IJoueur
+/** Joueur d'escampe base sur l'interface IJoueur
  * 	*/
 
 public class JoueurSuperFort implements IJoueur{
 
 	/**	
-	 * Le joueur à :
+	 * Le joueur a :
 	 * 	- Une couleur
 	 * 	- Un plateau de jeu
 	 * 	- Différentes heuristiques
