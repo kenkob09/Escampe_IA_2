@@ -41,7 +41,6 @@ public class EscampeBoard implements Etat {
 	}
 	
 	public EscampeBoard() {
-		// TODO Auto-generated constructor stub
 		this.white = new String[6];
 		this.black = new String[6];
 		last_lisere = 0;
@@ -637,8 +636,6 @@ public class EscampeBoard implements Etat {
 		//Tests
 	
 		EscampeBoard eb = new EscampeBoard();
-	    //Definition du chemin actuel
-	    String projectDir = Paths.get(".").toAbsolutePath().normalize().toString();
 	 
 	    // Test setFromFile
 	    eb.setFromFile("\\src\\data\\plateau1.txt");	    
