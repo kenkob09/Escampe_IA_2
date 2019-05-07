@@ -188,6 +188,7 @@ public class EscampeBoard implements Etat {
     				presence.add(p);
     				int i = get_i_from_string(p);
     				int j = get_j_from_string(p);
+    				bord_noir = (get_i_from_string(black[0])>3) ? "haut" : "bas";
     				if ( (bord_noir.contains("bas") )&&((i<0)||(i>1)||(j<0)||(j>5)) ) {
     					return false;		
     				}

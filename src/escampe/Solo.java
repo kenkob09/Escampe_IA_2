@@ -97,6 +97,7 @@ public class Solo {
     		System.out.println("\n*********\nOn demande à " + joueurCourant.binoName() + " de jouer...");
     		long waitingTime1 = new Date().getTime();
     		
+
     		coup = joueurCourant.choixMouvement();
     		
     		long waitingTime2 = new Date().getTime();
