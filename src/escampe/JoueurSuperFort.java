@@ -1,5 +1,7 @@
 package escampe;
 
+import java.util.Random;
+
 import algorithmes.AlphaBeta;
 import algorithmes.IDAlphaBeta;
 import modeles.Probleme;
@@ -17,10 +19,12 @@ public class JoueurSuperFort implements IJoueur{
 	 * */
 	
 	public String player;
-	private EscampeBoard board;
+	private EscampeBoard board; 
 	private HeuristiqueEscampe hOP;
 	private AlphaBeta algo;
 	private IDAlphaBeta algoID;
+	private final String placement_bas = "C6/B5/C5/D5/E5/F5"; //Meilleur placement bas
+	private final String placement_haut = "C1/B2/C2/D2/E2/F2"; //Meilleur placement haut
 	
 	@Override
 	public void initJoueur(int mycolour) {
@@ -48,16 +52,33 @@ public class JoueurSuperFort implements IJoueur{
 
 	@Override
 	public String choixMouvement() {
-		
-		//TODO : Premier mouvement a mieux choisir
-		String w = "F1/A1/B1/C2/E2/F2";
-		String b = "C6/A6/B5/D5/E6/F5";
-		
+
 		String coupJoue;
 		
-		if((board.getWhite()[0] == null) || (board.getBlack()[0] == null)){
-			coupJoue = ((player == "blanc") ?  w : b);
+		//Si aucun des deux joueurs n'a fait son placement de debut de partie
+		if( (board.getWhite()[0]==null)&&(board.getBlack()[0]==null) ) {
+			Random rand = new Random();
+			int r = rand.nextInt(100);		
+			coupJoue = (r<=50) ? placement_haut : placement_bas;
 		}
+		
+		//Si l'un des deux joueurs a deja fait son placement de debut de partie
+		else if((board.getWhite()[0] == null) || (board.getBlack()[0] == null)){
+			String couleur_adverse = (board.getBlack()[0] == null) ? "white" : "black";
+			String bord_ami;
+			
+			//On prend le bord oppose au bord qui contient la licorne adverse
+			if (couleur_adverse.contains("white")) {
+				bord_ami = ( (EscampeBoard.get_i_from_string(board.getWhite()[0]) ) >3 )?"haut" : "bas";
+			}
+			else {
+				bord_ami = ( (EscampeBoard.get_i_from_string(board.getBlack()[0]) ) >3 )?"haut" : "bas";
+			}
+			coupJoue = (bord_ami.contains("haut")) ? placement_haut : placement_bas ;
+		}
+		
+		
+		//Si on est en milieu de partie
 		else {
 			
 			if(board.gameOver()) {	// Si la partie est fini
@@ -90,9 +111,6 @@ public class JoueurSuperFort implements IJoueur{
 			
 			// Avec IterativeAlphaBeta
 			String meilleurCoup = algoID.meilleurCoup(pb);	// Itérative Deepening Alpha Beta
-			
-			// Avec NegAlphaBeta
-			//String meilleurCoup = algoNegAB.meilleurCoup(pb);
 			
 			System.out.println("Meilleur Coup : "+ meilleurCoup);
 			coupJoue = meilleurCoup;

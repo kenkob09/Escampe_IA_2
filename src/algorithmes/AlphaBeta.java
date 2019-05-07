@@ -7,44 +7,26 @@ import modeles.Etat;
 import modeles.Heuristique;
 import modeles.Probleme;
 
+/** Classe Alpha Beta
+ * 
+ * @author Kobayashi_Ramos
+ * @see
+ * @version 1*/
+
 public class AlphaBeta {
    
-    // -------------------------------------------
-    // Attributs
-    // -------------------------------------------
+    /** Attributs **/
 	
-    /** La profondeur de recherche par défaut
-     */
     private final static int PROFMAXDEFAUT = 10;
- 
-    /**  La profondeur de recherche utilisée pour l'algorithme
-     */
     private int profMax = PROFMAXDEFAUT;
-
-     /**  L'heuristique utilisée par l'algorithme
-      */
     private Heuristique h;
-
-    /** Le joueur Min
-     *  (l'adversaire) */
     private String joueurMin;
-
-    /** Le joueur Max
-     * (celui dont l'algorithme de recherche adopte le point de vue) */
     private String joueurMax;
-
-    /**  Le nombre de noeuds développé par l'algorithme
-     * (intéressant pour se faire une idée du nombre de noeuds développés) */
     private int nbnoeuds;
-
-    /** Le nombre de feuilles évaluées par l'algorithme
-     */
     private int nbfeuilles;
 
+    /** Constructeurs **/
 
-  // -------------------------------------------
-  // Constructeurs
-  // -------------------------------------------
     public AlphaBeta(Heuristique h, String joueurMax, String joueurMin) {
         this(h,joueurMax,joueurMin,PROFMAXDEFAUT);
     }
@@ -56,10 +38,9 @@ public class AlphaBeta {
         profMax = profMaxi;
     }
 
-  // -------------------------------------------
-  // Méthodes de l'interface AlgoJeu
-  // -------------------------------------------
-    
+    /** Recherche du meilleur coup pour un probleme selon l'algorithme AlphaBeta
+     * 
+     * @param Probleme p, le probleme a resoudre */
     
     public String meilleurCoup(Probleme p) {
     	
