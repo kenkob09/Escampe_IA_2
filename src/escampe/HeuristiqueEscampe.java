@@ -12,7 +12,8 @@ public class HeuristiqueEscampe implements Heuristique{
 		this.player=player;
 	}
 	
-	//Heuristique qu'on va utiliser qui regroupe hend, h3 et le fait qu'un pion ne doit pas aller sur un lisere qui pourrait mettre en danger sa licorne
+	//Heuristique hFinal
+	//Heuristique qu'on va utiliser qui regroupe evalEnd, evalDist et le fait qu'un pion ne doit pas aller sur un lisere qui pourrait mettre en danger sa licorne
 	public float eval(Etat e) {
 		if (e instanceof EtatEscampe) {
 			EtatEscampe ee = (EtatEscampe) e;
@@ -137,7 +138,7 @@ public class HeuristiqueEscampe implements Heuristique{
 						
 						//Si la licorne n'est pas atteignable par le paladin, la situation reste un peu defavorable
 						else {
-							res = res - 20;
+							res = res - 50;
 						}
 					}
 				}
@@ -195,7 +196,7 @@ public class HeuristiqueEscampe implements Heuristique{
 						
 						//Si la licorne ennemi n'est pas atteignable par le paladin, la situation reste un peu favorable
 						else {
-							res = res + 20;
+							res = res + 50;
 						}
 					}
 				}
@@ -208,8 +209,8 @@ public class HeuristiqueEscampe implements Heuristique{
 	}
 	
 	
-	//Heuristique h3
-	public float eval3(Etat e) {
+	//Heuristique hDist
+	public float evalDist(Etat e) {
 		if (e instanceof EtatEscampe) {
 			EtatEscampe ee = (EtatEscampe) e;
 			int i_l_ami,j_l_ami;
@@ -260,7 +261,7 @@ public class HeuristiqueEscampe implements Heuristique{
 	}
 	
 	
-	//Heuristique hend
+	//Heuristique hEnd
 	public float evalEnd(Etat e) {
 		if (e instanceof EtatEscampe) {
 			EtatEscampe ee = (EtatEscampe) e;
