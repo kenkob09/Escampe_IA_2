@@ -10,7 +10,6 @@ import modeles.Probleme;
 /** Classe Alpha Beta
  * 
  * @author Kobayashi_Ramos
- * @see
  * @version 1*/
 
 public class AlphaBeta {
@@ -94,7 +93,6 @@ public class AlphaBeta {
 			}
 			nbfeuilles++;
 			return this.h.eval(ee);	
-	    	
 		}
 		
 		// Sinon, on regarde les etats successeurs
